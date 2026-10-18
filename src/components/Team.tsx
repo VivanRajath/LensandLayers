@@ -23,7 +23,6 @@ const lineup: { slug: string; x: number; row: "front" | "back" }[] = [
   { slug: "vihan", x: 90, row: "front" },
 ];
 
-const CARD_W = 340;
 
 export default function Team() {
   const ref = useRef<HTMLElement>(null);
@@ -83,7 +82,8 @@ export default function Team() {
     const right = p.left - r.left + p.width * 0.86;
     const left = p.left - r.left + p.width * 0.14;
     let x = right + 12;
-    if (x + CARD_W > stage.clientWidth) x = left - CARD_W - 12;
+    const cw = card.offsetWidth || 340; // card scales with the root font size on large screens
+    if (x + cw > stage.clientWidth) x = left - cw - 12;
     const yRaw = py ?? p.top - r.top + p.height * 0.2;
     const y = Math.min(Math.max(yRaw - ch / 2, -ch * 0.2), stage.clientHeight - ch * 0.8);
     if (instant) gsap.set(card, { x, y });
