@@ -253,7 +253,7 @@ export const team: TeamMember[] = [
     summary: "Crafts distinct visual brand languages across identity systems, print collateral, key visual campaign posters, and digital marketing creatives. Focuses on typographic precision, bold layout composition, and marketing resonance.",
   },
   {
-    id: "LL-006", slug: "vihan", name: "Vihan", role: "Web Developer",
+    id: "LL-006", slug: "vivan", name: "Vivan", role: "Web Developer",
     department: "Engineering, Analytics & Content",
     summary: "Architects modern, responsive web experiences, interactive agency showcases, and robust digital platforms. Ensures lightning-fast load speeds, responsive layouts across devices, and clean, scalable code architecture.",
   },
