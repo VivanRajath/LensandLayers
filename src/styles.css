@@ -262,7 +262,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .studio-guide { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
 .studio-guide.g1 { left: var(--gutter); } .studio-guide.g2 { left: 50%; } .studio-guide.g3 { right: var(--gutter); }
 .studio-card { padding: clamp(40px, 4vw, 64px) clamp(24px, 3.5vw, 64px) clamp(56px, 6vw, 96px); display: grid; gap: 36px; align-content: start; }
-.studio-img { position: relative; aspect-ratio: 4 / 3; color: var(--ink); }
+.studio-img { position: relative; aspect-ratio: 5 / 4; color: var(--ink); }
 .studio-img-inner { position: absolute; inset: 0; overflow: hidden; clip-path: inset(100% 0% 0% 0%); background: var(--black); }
 .studio-img img { width: 100%; height: 100%; object-fit: cover; }
 .studio-body { display: grid; gap: 12px; max-width: 520px; }
@@ -275,7 +275,7 @@ ul { list-style: none; margin: 0; padding: 0; }
    ========================================================= */
 .svc {
   --frame-w: clamp(190px, 16.5vw, 300px);
-  --frame-h: calc(var(--frame-w) * 386 / 293);
+  --frame-h: calc(var(--frame-w) * 5 / 4); /* posters are 4:5 */
   --strip-gap: clamp(12px, 1.6vw, 28px);
   --left-w: clamp(200px, 18vw, 300px);
   --col-gap: clamp(32px, 6vw, 120px);
@@ -597,7 +597,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     scrollbar-width: none;
   }
   .svc-strip::-webkit-scrollbar { display: none; }
-  .svc-strip-item { position: relative; left: auto !important; flex: none; width: 62vw; max-width: 280px; height: auto; aspect-ratio: 293 / 386; scroll-snap-align: start; }
+  .svc-strip-item { position: relative; left: auto !important; flex: none; width: 62vw; max-width: 280px; height: auto; aspect-ratio: 4 / 5; scroll-snap-align: start; }
   .svc-content { padding: 0 var(--gutter) 40px; }
   .svc-spacer { display: none; }
   .svc-group { padding-top: 64px; }
@@ -606,7 +606,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   .svc-group-label { position: static; display: block; margin-bottom: 24px; }
   .svc-item { min-height: 0; color: var(--i-off); }
   .svc-item-media { display: block; padding-top: 20px; }
-  .svc-item-media-inner { aspect-ratio: 4 / 3; overflow: hidden; }
+  .svc-item-media-inner { aspect-ratio: 4 / 5; max-width: 480px; overflow: hidden; }
   .svc-item-media img { width: 100%; height: 100%; object-fit: cover; }
   .svc-item-inner { width: 100%; padding: 22px 0 56px; }
   .svc-item-head { margin-bottom: 28px; }

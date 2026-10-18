@@ -3,7 +3,7 @@ const u = (id: string, w = 1400) =>
 
 export type IconName =
   | "trend" | "search" | "social" | "camera" | "video" | "pen"
-  | "doc" | "target" | "web" | "box" | "reel" | "chart";
+  | "doc" | "target" | "web" | "box" | "reel" | "chart" | "megaphone" | "cube";
 
 export type Service = {
   id: string;
@@ -26,12 +26,15 @@ export type ServiceGroup = {
 export const heroImage = u("1493863641943-9b68992a8d07", 2400);
 
 export const heroTaglines = [
-  "Digital marketing, SEO, social media, photography & video production",
+  "Digital marketing, SEO, social media, product photography, video editing & CGI ads",
   "One studio for every layer of your brand — strategy, content, growth",
 ];
 
+/** Client artwork lives in /public (from the Lens & Layers Drive folders). */
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 /** First image the strip collapses into, before any service is active. */
-export const introImage = { src: u("1500051638674-ff996a0ec29e"), alt: "Wall of printed photographs" };
+export const introImage = { src: asset("studio/lens-portrait.webp"), alt: "Lens & Layers camera studio" };
 
 export const groups: ServiceGroup[] = [
   {
@@ -42,79 +45,79 @@ export const groups: ServiceGroup[] = [
       {
         id: "digital-marketing",
         name: "Digital Marketing",
-        tagline: "Strategy first. Growth that compounds.",
+        tagline: "Every channel. One growth plan.",
         body: [
-          "Full-funnel marketing plans built around your business goals: who to reach, what to say, and which channels actually deliver. Google Ads, Meta Ads, email and landing pages working as one connected system.",
-          "Every campaign is tracked end to end — from first impression to closed lead — with monthly optimisation so your budget keeps getting smarter, not just bigger.",
+          "Google Ads, social media marketing, email campaigns and SEO run as one connected system, aimed at the audience that actually buys from you.",
+          "Live campaign dashboards track impressions, engagement, conversions and ad spend, so every decision is backed by numbers and every month performs better than the last.",
         ],
         cta: "Start a campaign",
-        img: u("1460925895917-afdab827c52f"),
-        alt: "Analytics dashboard on a laptop",
+        img: asset("services/digital-marketing.webp"),
+        alt: "Digital marketing campaign dashboard with Google Ads, email and social metrics",
         icon: "trend",
       },
       {
         id: "seo",
         name: "SEO",
-        tagline: "Be the first answer, not the fifth result.",
+        tagline: "Search. Optimize. Grow.",
         body: [
-          "Technical audits, keyword research, on-page optimisation, local SEO and Google Business Profile management. We fix what is holding your site back, then build the content and links that earn rankings.",
-          "Transparent monthly reporting shows keyword movement, organic traffic and — most importantly — the enquiries it brings in.",
+          "Technical optimization, on-page SEO, high-quality content and quality backlinks that move you up the rankings and keep you there.",
+          "Complete SEO solutions for real business growth: higher rankings, targeted traffic and measurable performance improvement, reported every month.",
         ],
         cta: "Get an SEO audit",
-        img: u("1526628953301-3e589a6a8b74"),
-        alt: "SEO performance metrics on screen",
+        img: asset("services/seo.webp"),
+        alt: "SEO artwork showing rankings, backlinks, on-page SEO and targeted traffic",
         icon: "search",
       },
       {
         id: "social-media",
-        name: "Social Media Marketing",
-        tagline: "Content people stop for. Communities that stay.",
+        name: "Social Media Management & Marketing",
+        tagline: "Strategy • Content • Community • Growth",
         body: [
-          "Instagram, Facebook, LinkedIn and YouTube managed end to end: content calendars, design, captions, community management and creator collaborations.",
-          "Paired with targeted paid social, we turn followers into customers and track it all back to real business results.",
+          "Instagram, Facebook, YouTube and LinkedIn handled end to end: content calendars, post and reel design, captions and community management.",
+          "Paired with targeted promotion, we turn followers into a community and a community into customers, with growth you can see in the numbers.",
         ],
         cta: "Grow your socials",
-        img: u("1611926653458-09294b3142bf"),
-        alt: "Social media apps on a phone",
+        img: asset("services/social-media.webp"),
+        alt: "Hand holding a phone surrounded by social media icons",
         icon: "social",
       },
       {
-        id: "photography",
-        name: "Photography",
-        tagline: "Images that tell your story at a glance.",
+        id: "product-photography",
+        name: "Product Photography",
+        tagline: "Studio-lit. Scroll-stopping. Ready to sell.",
         body: [
-          "Product, food, fashion, corporate, event and lifestyle shoots — in our studio or on location. Art direction, styling and professional retouching included.",
-          "Every shoot is planned around where the images will live, so you walk away with assets ready for web, social, print and ads.",
+          "Professional product shoots in our own studio, with lighting, styling, props and retouching handled by the Lens & Layers crew.",
+          "White-background catalogue shots, lifestyle setups and hero images delivered in every size you need for e-commerce, marketplaces, social and print.",
         ],
         cta: "Book a shoot",
-        img: u("1492691527719-9d1e07e534b4"),
-        alt: "Photographer on a mountain at sunrise",
+        img: asset("services/product-photography.webp"),
+        alt: "Lens & Layers crew shooting a product in a lit studio",
         icon: "camera",
       },
       {
         id: "video-editing",
-        name: "Video Editing & Production",
-        tagline: "From raw footage to final cut.",
+        name: "Video Editing",
+        tagline: "Make every frame count.",
         body: [
-          "Brand films, ads, YouTube videos, reels, podcasts and event coverage. Scripting, filming, editing, colour grading, sound design and motion graphics — all in-house.",
-          "Already have footage? Send it over and our editors will turn it into content that keeps people watching to the last frame.",
+          "Creative editing. Stories that connect. Social content, motion design, audio polish and brand stories cut to keep people watching.",
+          "From reels and ads to brand films and YouTube, we handle pacing, colour grading, sound and motion graphics for a broadcast-ready finish.",
         ],
         cta: "Start a video",
-        img: u("1574717024653-61fd2cf4d44d"),
-        alt: "Video editing timeline",
+        img: asset("services/video-editing.webp"),
+        alt: "Editor working on a video timeline: video that moves",
         icon: "video",
       },
       {
-        id: "branding",
-        name: "Branding & Graphic Design",
-        tagline: "A brand people recognise before they read it.",
+        id: "graphic-design",
+        name: "Graphic Design",
+        tagline: "Branding | Visuals | Impact",
         body: [
-          "Logos, visual identity, brand guidelines, packaging, brochures and social templates. We define how your brand looks, sounds and feels across every touchpoint.",
-          "The result is a consistent system your team can use every day — not just a logo file sitting in a folder.",
+          "From ideas to stunning visuals, we create designs that communicate, connect and convert.",
+          "Branding that builds a strong identity, creative designs for every need, social media graphics that stand out online, print design from concept to print, and packaging that sells products.",
         ],
         cta: "Build your brand",
-        img: u("1626785774573-4b799315345d"),
-        alt: "Design apps on a tablet",
+        img: asset("services/graphic-design.webp"),
+        alt: "Creative graphic design artwork with a stylus and paint splash",
         icon: "pen",
       },
     ],
@@ -125,76 +128,56 @@ export const groups: ServiceGroup[] = [
     theme: "light",
     items: [
       {
-        id: "content-strategy",
-        name: "Content Strategy & Copywriting",
-        tagline: "The right words, in the right place.",
+        id: "ads-campaign",
+        name: "Ads Campaign",
+        tagline: "Strategy | Create | Optimize | Grow",
         body: [
-          "Content pillars, blogs, website copy, ad copy and video scripts written for your audience and optimised for search — one consistent voice across every channel.",
+          "Full-funnel campaigns across Google Ads, Meta Ads (Facebook & Instagram), YouTube, TikTok, LinkedIn, Google Maps local ads and email.",
+          "Audience research, creative design, campaign setup and ongoing optimization, all aimed at one thing: better ROI.",
         ],
-        cta: "Talk content",
-        img: u("1533750516457-a7f992034fec"),
-        alt: "Writer planning content at a desk",
-        icon: "doc",
-      },
-      {
-        id: "performance-ads",
-        name: "Performance Ads (PPC)",
-        tagline: "Every rupee accounted for.",
-        body: [
-          "Google Search, Shopping, YouTube and Meta campaigns built for conversions, with creative testing, retargeting and conversion tracking set up properly from day one.",
-        ],
-        cta: "Launch ads",
-        img: u("1563986768609-322da13575f3"),
-        alt: "Managing ad campaigns on laptop and phone",
+        cta: "Launch a campaign",
+        img: asset("services/ads-campaign.webp"),
+        alt: "Ads campaign dashboard with Google, Meta, YouTube, TikTok and LinkedIn ads",
         icon: "target",
       },
       {
-        id: "web-design",
-        name: "Website Design & Development",
-        tagline: "Fast, beautiful sites built to convert.",
+        id: "advertising",
+        name: "Advertising",
+        tagline: "Be seen where your customers are looking.",
         body: [
-          "Responsive websites, landing pages and online stores designed around your content and built SEO-ready, with analytics and lead capture wired in from launch.",
+          "Search ads, sponsored social posts and display creatives built around the right audience, designed in-house and tracked from first view to final sale.",
+          "We plan the message, produce the creative and read the analytics, so your ad spend reaches people ready to act.",
         ],
-        cta: "Plan a website",
-        img: u("1609921212029-bb5a28e60960"),
-        alt: "Website layouts on a monitor",
+        cta: "Plan your ads",
+        img: asset("services/advertising.webp"),
+        alt: "Laptop showing ad performance with sponsored social posts and a target",
+        icon: "megaphone",
+      },
+      {
+        id: "cgi-ads",
+        name: "CGI Designing & Marketing",
+        tagline: "Build | Create | Grow",
+        body: [
+          "From ideas to visual impact. We design, create and market your brand for the digital world.",
+          "Photoreal CGI ads, 3D product visuals and VFX sequences that make your brand impossible to scroll past, paired with the strategy to put them in front of the right people.",
+        ],
+        cta: "Create a CGI ad",
+        img: asset("services/cgi-ads.webp"),
+        alt: "CGI artwork of a city skyline rising out of a laptop with a film strip",
+        icon: "cube",
+      },
+      {
+        id: "web-creation",
+        name: "Website Creation",
+        tagline: "Transform ideas into digital experiences.",
+        body: [
+          "Creative websites for modern brands: UI/UX design, web development and responsive layouts that look sharp on every screen.",
+          "Every site is SEO-ready and built for high performance, so it loads fast, ranks well and turns visitors into enquiries.",
+        ],
+        cta: "Build your website",
+        img: asset("services/web-creation.webp"),
+        alt: "Website mockups on laptop and phone: transform ideas into digital experiences",
         icon: "web",
-      },
-      {
-        id: "product-shoots",
-        name: "Product & E-commerce Shoots",
-        tagline: "Catalogue-ready. Marketplace-approved.",
-        body: [
-          "White-background, lifestyle and 360° product photography for Amazon, Flipkart, Shopify and your own store — delivered in every size each platform needs.",
-        ],
-        cta: "Shoot products",
-        img: u("1502920917128-1aa500764cbd"),
-        alt: "Product shot of a camera on white",
-        icon: "box",
-      },
-      {
-        id: "reels",
-        name: "Reels & Short-form Content",
-        tagline: "Hook in one second. Hold for thirty.",
-        body: [
-          "Monthly packages of trend-aware reels, shorts and stories: concept, shoot, edit, captions and posting — built for reach on Instagram and YouTube.",
-        ],
-        cta: "Get reels",
-        img: u("1542038784456-1ea8e935640e"),
-        alt: "Creator holding a camera",
-        icon: "reel",
-      },
-      {
-        id: "growth-reviews",
-        name: "Monthly Growth Reviews",
-        tagline: "Clear numbers. Clear next steps.",
-        body: [
-          "A sit-down every month covering reach, engagement, leads, spend and ROI, with a plan for what we test next. No jargon, no vanity metrics.",
-        ],
-        cta: "See a sample report",
-        img: u("1557804506-669a67965ba0"),
-        alt: "Team presenting a strategy review",
-        icon: "chart",
       },
     ],
   },
@@ -207,17 +190,17 @@ export const studio = [
     num: "01",
     kicker: "In-house Studio",
     title: "Lens Studio",
-    body: "Photographers, videographers, editors and designers working side by side. Shoots, edits, motion graphics and brand assets are produced in-house — nothing gets lost in hand-offs and turnaround stays fast.",
-    img: u("1559136555-9303baea8ebd", 1200),
-    alt: "Creative team working in a studio",
+    body: "Our own camera floor: cinema cameras, lenses and lighting, with photographers and videographers working side by side. Shoots are planned, lit and captured in-house, so nothing gets lost in hand-offs.",
+    img: asset("studio/lens.webp"),
+    alt: "Lens & Layers camera studio with cinema cameras and lighting",
   },
   {
     num: "02",
-    kicker: "Performance Lab",
-    title: "Layers Analytics",
-    body: "Live dashboards tracking rankings, reach, leads and ROAS across Google, Meta and your website. You always know what is working, what is not, and where the next rupee should go.",
-    img: u("1551434678-e076c223a692", 1200),
-    alt: "Marketing team analysing campaign data",
+    kicker: "Post-production & Performance",
+    title: "Layers Suite",
+    body: "Where footage becomes finished work: editing, VFX, design and SEO on the same floor. Live dashboards track rankings, reach, leads and ROAS, so you always know what is working and where to go next.",
+    img: asset("studio/layer.webp"),
+    alt: "Lens & Layers editing and design suite with multiple screens",
   },
 ];
 

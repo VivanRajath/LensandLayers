@@ -13,6 +13,8 @@ const paths: Record<IconName, string> = {
   box: "M24 5l17 9v20l-17 9-17-9V14zM7 14l17 9 17-9M24 23v20",
   reel: "M13 4h22v40H13zM21 19l8 5-8 5z",
   chart: "M8 40V8M8 40h32M15 32V22M23 32V14M31 32V26M39 32V18",
+  megaphone: "M8 20h8l18-10v28L16 28H8zM16 28l3 12h6l-3-12M40 19v10",
+  cube: "M24 5l17 9v20l-17 9-17-9V14zM7 14l17 9 17-9M24 23v20M15.5 9.5l17 9",
 };
 
 /** Line icon sitting on a dotted grid tile, echoing the reference's pixel icons. */
