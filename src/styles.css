@@ -172,21 +172,32 @@ ul { list-style: none; margin: 0; padding: 0; }
 .header.is-open .menu-btn-dots { transform: rotate(45deg); }
 
 .menu {
-  position: fixed; inset: 0; z-index: 1;
+  position: fixed; inset: 0 0 auto 0; z-index: 1;
+  max-height: 100vh; max-height: 100dvh;
   background: var(--black);
   color: var(--white);
   clip-path: inset(0% 0% 100% 0%);
   pointer-events: none;
   overflow-y: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .header.is-open .menu { pointer-events: auto; }
+/* Dims the page under the dropdown; clicking it closes the menu */
+.menu-backdrop {
+  position: fixed; inset: 0; z-index: 0;
+  background: rgba(17,17,17,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease);
+}
+.header.is-open .menu-backdrop { opacity: 1; pointer-events: auto; }
 .menu-grid {
-  min-height: 100%;
-  padding: calc(var(--header-h) + 48px) var(--gutter) 48px;
+  padding: calc(var(--header-h) + clamp(32px, 6vh, 72px)) var(--gutter) 48px;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 48px;
-  align-content: end;
+  align-content: start;
 }
 .menu-main, .menu-side { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .menu-main { gap: 14px; }

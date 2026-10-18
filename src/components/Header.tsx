@@ -94,6 +94,7 @@ export default function Header() {
         </div>
       </div>
 
+      <div className="menu-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />
       <div className="menu" id="site-menu" ref={menuRef} aria-hidden={!open}>
         <div className="menu-grid">
           <div className="menu-main">
