@@ -60,10 +60,10 @@ export default function Hero({ ready }: { ready: boolean }) {
 
       <div className="hero-content">
         <span className="mono-label hero-fade">Our services</span>
-        <h1 className="hero-title" aria-label="Every frame, every layer, every click">
-          <span className="ln is-muted"><span>Every frame.</span></span>
-          <span className="ln"><span>Every layer.</span></span>
-          <span className="ln"><span>Every click.</span></span>
+        <h1 className="hero-title" aria-label="Every visual, every strategy, every reach">
+          <span className="ln is-muted"><span>Every visual.</span></span>
+          <span className="ln"><span>Every strategy.</span></span>
+          <span className="ln"><span>Every reach.</span></span>
         </h1>
       </div>
 

@@ -31,10 +31,10 @@ export default function Studio() {
   return (
     <section className="studio" id="studio" ref={ref}>
       <div className="studio-head">
-        <SplitHeading className="display center" lines={["[Creative-led]", "data-driven", "& always visible"]} />
+        <SplitHeading className="display center" lines={["[Creative by design.]", "Data-driven by default.", "Built to convert."]} />
         <p className="studio-sub">
-          Every project at Lens &amp; Layers runs through two in-house engines — a production studio that creates
-          the content and a performance lab that proves it works.
+          Every campaign at Lens &amp; Layers runs through two integrated engines: a dedicated production studio
+          capturing high-impact visual stories, and a digital performance lab engineering measurable business growth.
         </p>
       </div>
 

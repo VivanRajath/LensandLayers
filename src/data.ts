@@ -188,17 +188,17 @@ export const allServices = groups.flatMap((g) => g.items.map((s) => ({ ...s, gro
 export const studio = [
   {
     num: "01",
-    kicker: "In-house Studio",
-    title: "Lens Studio",
-    body: "Our own camera floor: cinema cameras, lenses and lighting, with photographers and videographers working side by side. Shoots are planned, lit and captured in-house, so nothing gets lost in hand-offs.",
+    kicker: "Visual production house",
+    title: "The Lens",
+    body: "Our dedicated visual production house. We specialize in commercial photography, editorial stills, and cinema-grade brand films, using high-end optics and deliberate set lighting to craft assets that arrest attention immediately.",
     img: asset("studio/lens.webp"),
     alt: "Lens & Layers camera studio with cinema cameras and lighting",
   },
   {
     num: "02",
-    kicker: "Post-production & Performance",
-    title: "Layers Suite",
-    body: "Where footage becomes finished work: editing, VFX, design and SEO on the same floor. Live dashboards track rankings, reach, leads and ROAS, so you always know what is working and where to go next.",
+    kicker: "Digital execution ecosystem",
+    title: "The Layers",
+    body: "Our complete digital execution ecosystem. We manage full-funnel paid media campaigns, SEO authority, web architecture, and multi-channel strategies engineered to turn audience engagement into measurable revenue.",
     img: asset("studio/layer.webp"),
     alt: "Lens & Layers editing and design suite with multiple screens",
   },
