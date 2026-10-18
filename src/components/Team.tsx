@@ -13,14 +13,14 @@ const bySlug = Object.fromEntries(team.map((m) => [m.slug, m])) as Record<string
  */
 const lineup: { slug: string; x: number; row: "front" | "back" }[] = [
   { slug: "abhishek", x: 20, row: "back" },
-  { slug: "vikas", x: 40, row: "back" },
+  { slug: "rachana", x: 40, row: "back" },
   { slug: "dushyanth", x: 60, row: "back" },
   { slug: "sharath", x: 80, row: "back" },
   { slug: "supreeth", x: 10, row: "front" },
   { slug: "deepak", x: 30, row: "front" },
   { slug: "deekshith", x: 50, row: "front" },
-  { slug: "rachana", x: 70, row: "front" },
-  { slug: "vihan", x: 90, row: "front" },
+  { slug: "vikas", x: 70, row: "front" },
+  { slug: "vivan", x: 90, row: "front" },
 ];
 
 
