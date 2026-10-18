@@ -98,7 +98,7 @@ export default function Header() {
         <div className="menu-grid">
           <div className="menu-main">
             <span className="mono-label menu-fade">Navigate</span>
-            {[...nav.slice(0, 2), { label: "Work", href: "#services" }, nav[3]].map((n, i) => (
+            {nav.map((n, i) => (
               <a key={n.label + i} href={n.href} onClick={go(n.href)} className="menu-link">
                 <span>
                   <em>0{i + 1}</em>
