@@ -2,34 +2,39 @@
  * Lens & Layers — contact form backend (Google Apps Script)
  *
  * What it does for every enquiry sent from the website:
- *   1. Adds a row to the "Enquiries" tab of the Google Sheet this script is attached to.
+ *   1. Adds a row to the "Enquiries" tab of a Google Sheet.
  *   2. Emails the visitor a thank-you ("our team will get in touch").
  *   3. Optionally emails the team a notification (set TEAM_EMAIL below).
  *
- * Setup (once):
- *   1. Create a Google Sheet → Extensions → Apps Script. Replace Code.gs with this file.
- *   2. Edit the CONFIG block below and save.
- *   3. Deploy → New deployment → type "Web app".
- *        Execute as: Me        Who has access: Anyone
- *      Authorise when asked (it needs Sheets + "send email as you").
- *   4. Copy the Web app URL (ends in /exec) and set it as VITE_CONTACT_ENDPOINT for the site.
- *   After editing this script later, use Deploy → Manage deployments → Edit → New version,
- *   so the same /exec URL keeps working.
+ * Setup / after any edit:
+ *   1. Paste this file into the Apps Script editor and fill in CONFIG.
+ *      - If the script was opened from a Sheet (Extensions → Apps Script), leave SPREADSHEET_ID "".
+ *      - If it is a standalone script (made at script.google.com), paste the ID of the sheet:
+ *        docs.google.com/spreadsheets/d/<THIS PART>/edit
+ *   2. Choose the function "setup" in the toolbar and press Run. Approve the permissions
+ *      (Sheets + send email). It creates the tab and emails you a test message.
+ *   3. Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy.
+ *      (Execute as: Me · Who has access: Anyone.) The /exec URL stays the same.
+ *
+ * If the site shows an error, open Executions (left sidebar) to see the full message.
  */
 
 const CONFIG = {
+  /** Leave "" when this script is attached to the sheet; otherwise the sheet's ID. */
+  SPREADSHEET_ID: "",
   SHEET_NAME: "Enquiries",
   BRAND: "Lens & Layers Digital Solutions",
   /** Where team notifications go and where visitor replies land. Leave "" to skip notifications. */
   TEAM_EMAIL: "",
-  WEBSITE: "https://lensandlayers.pages.dev",
+  WEBSITE: "https://lensandlayers.in",
 };
 
-const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Company", "Services", "Message", "Page"];
+const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Company", "Services", "Message", "Page", "Email status"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.tryLock(10000);
+  let stage = "read";
   try {
     const p = (e && e.parameter) || {};
 
@@ -49,7 +54,10 @@ function doPost(e) {
     if (!data.name) return json({ ok: false, error: "Please enter your name." });
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return json({ ok: false, error: "Please enter a valid email address." });
 
-    getSheet().appendRow([
+    // 1. Record first, so an email problem never loses an enquiry.
+    stage = "sheet";
+    const sheet = getSheet();
+    sheet.appendRow([
       new Date(),
       safeCell(data.name),
       safeCell(data.email),
@@ -58,15 +66,35 @@ function doPost(e) {
       safeCell(data.service),
       safeCell(data.message),
       safeCell(data.page),
+      "sending…",
     ]);
+    const row = sheet.getLastRow();
 
-    sendThankYou(data);
-    if (CONFIG.TEAM_EMAIL) notifyTeam(data);
+    // 2. Emails. Failures are logged on the row but the visitor still gets a success.
+    stage = "email";
+    let status = "sent";
+    try {
+      sendThankYou(data);
+    } catch (mailErr) {
+      console.error("Thank-you email failed:", mailErr);
+      status = "failed: " + String(mailErr).slice(0, 200);
+    }
+    if (CONFIG.TEAM_EMAIL) {
+      try {
+        notifyTeam(data, sheet.getParent().getUrl());
+      } catch (teamErr) {
+        console.error("Team notification failed:", teamErr);
+      }
+    }
+    sheet.getRange(row, HEADERS.length).setValue(status);
 
     return json({ ok: true });
   } catch (err) {
-    console.error(err);
-    return json({ ok: false, error: "Something went wrong. Please try again or email us directly." });
+    console.error("Enquiry failed at stage '" + stage + "':", err);
+    return json({
+      ok: false,
+      error: "Something went wrong. Please try again or email us directly. (ref: " + stage.toUpperCase() + ")",
+    });
   } finally {
     lock.releaseLock();
   }
@@ -75,6 +103,17 @@ function doPost(e) {
 /** Visiting the /exec URL in a browser shows this, which is a quick way to check the deployment. */
 function doGet() {
   return json({ ok: true, service: "Lens & Layers contact form" });
+}
+
+/**
+ * Run once from the editor (select "setup" → Run). Grants permissions, creates the
+ * Enquiries tab, and emails you a test so you know mail delivery works.
+ */
+function setup() {
+  const sheet = getSheet();
+  const me = Session.getEffectiveUser().getEmail();
+  MailApp.sendEmail(me, CONFIG.BRAND + " contact form is connected", "Enquiries will be saved to:\n" + sheet.getParent().getUrl());
+  console.log("OK — sheet: " + sheet.getParent().getUrl() + " · test email sent to " + me + " · emails left today: " + MailApp.getRemainingDailyQuota());
 }
 
 function sendThankYou(d) {
@@ -95,7 +134,7 @@ function sendThankYou(d) {
   MailApp.sendEmail(opts);
 }
 
-function notifyTeam(d) {
+function notifyTeam(d, sheetUrl) {
   MailApp.sendEmail({
     to: CONFIG.TEAM_EMAIL,
     replyTo: d.email,
@@ -103,12 +142,24 @@ function notifyTeam(d) {
     body:
       "Name: " + d.name + "\nEmail: " + d.email + "\nPhone: " + (d.phone || "-") + "\nCompany: " + (d.company || "-") + "\nServices: " + (d.service || "-") +
       "\n\nMessage:\n" + (d.message || "-") + "\n\nSent from: " + (d.page || "-") +
-      "\n\nAll enquiries: " + SpreadsheetApp.getActiveSpreadsheet().getUrl(),
+      "\n\nAll enquiries: " + sheetUrl,
   });
 }
 
-function getSheet() {
+function getSpreadsheet() {
+  if (CONFIG.SPREADSHEET_ID) return SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
   const ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    throw new Error(
+      "This script isn't attached to a Google Sheet. Set CONFIG.SPREADSHEET_ID to your sheet's ID " +
+        "(docs.google.com/spreadsheets/d/<ID>/edit), run setup, then deploy a new version.",
+    );
+  }
+  return ss;
+}
+
+function getSheet() {
+  const ss = getSpreadsheet();
   let sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(CONFIG.SHEET_NAME);
   if (sheet.getLastRow() === 0) {
