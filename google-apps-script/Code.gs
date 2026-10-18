@@ -25,7 +25,7 @@ const CONFIG = {
   WEBSITE: "https://lensandlayers.pages.dev",
 };
 
-const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Service", "Message", "Page"];
+const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Company", "Services", "Message", "Page"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -40,7 +40,8 @@ function doPost(e) {
       name: clean(p.name, 120),
       email: clean(p.email, 160).toLowerCase(),
       phone: clean(p.phone, 40),
-      service: clean(p.service, 120),
+      company: clean(p.company, 120),
+      service: clean(p.service, 600),
       message: clean(p.message, 3000),
       page: clean(p.page, 300),
     };
@@ -53,6 +54,7 @@ function doPost(e) {
       safeCell(data.name),
       safeCell(data.email),
       safeCell(data.phone),
+      safeCell(data.company),
       safeCell(data.service),
       safeCell(data.message),
       safeCell(data.page),
@@ -99,7 +101,7 @@ function notifyTeam(d) {
     replyTo: d.email,
     subject: "New website enquiry: " + d.name + (d.service ? " — " + d.service : ""),
     body:
-      "Name: " + d.name + "\nEmail: " + d.email + "\nPhone: " + (d.phone || "-") + "\nService: " + (d.service || "-") +
+      "Name: " + d.name + "\nEmail: " + d.email + "\nPhone: " + (d.phone || "-") + "\nCompany: " + (d.company || "-") + "\nServices: " + (d.service || "-") +
       "\n\nMessage:\n" + (d.message || "-") + "\n\nSent from: " + (d.page || "-") +
       "\n\nAll enquiries: " + SpreadsheetApp.getActiveSpreadsheet().getUrl(),
   });

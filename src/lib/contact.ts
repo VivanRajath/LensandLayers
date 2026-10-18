@@ -7,15 +7,25 @@
  */
 const ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined;
 
-export async function sendEnquiry(form: HTMLFormElement): Promise<void> {
+export type Enquiry = {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  /** Selected services, comma-separated */
+  service: string;
+  message: string;
+  /** Honeypot — must stay empty */
+  website: string;
+};
+
+export async function sendEnquiry(data: Enquiry): Promise<void> {
   if (!ENDPOINT) throw new Error("The contact form isn't connected yet. Please email us directly.");
 
-  const body = new URLSearchParams();
-  new FormData(form).forEach((v, k) => body.append(k, String(v)));
-  body.append("page", window.location.href);
+  const body = new URLSearchParams({ ...data, page: window.location.href });
 
   // Form-encoded body keeps this a "simple" CORS request: Apps Script can't answer a preflight.
   const res = await fetch(ENDPOINT, { method: "POST", body });
-  const data = (await res.json().catch(() => null)) as { ok: boolean; error?: string } | null;
-  if (!res.ok || !data?.ok) throw new Error(data?.error || "Something went wrong. Please try again.");
+  const json = (await res.json().catch(() => null)) as { ok: boolean; error?: string } | null;
+  if (!res.ok || !json?.ok) throw new Error(json?.error || "Something went wrong. Please try again.");
 }
