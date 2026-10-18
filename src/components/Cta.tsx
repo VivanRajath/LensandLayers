@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { allServices } from "../data";
 import { sendEnquiry, type Enquiry } from "../lib/contact";
+import ServiceSelect from "./ServiceSelect";
 
 type Errors = Partial<Record<"name" | "email" | "phone", string>>;
 
@@ -52,8 +53,6 @@ export default function Cta() {
     { scope: ref },
   );
 
-  const toggleService = (name: string) =>
-    setServices((cur) => (cur.includes(name) ? cur.filter((s) => s !== name) : [...cur, name]));
 
   const validate = (f: Enquiry): Errors => {
     const e: Errors = {};
@@ -204,26 +203,7 @@ export default function Cta() {
                 {field("company", "Company / brand", { autoComplete: "organization", maxLength: 120 })}
               </div>
 
-              <fieldset className="cf-services">
-                <legend>What can we help with?</legend>
-                <div className="cf-chips">
-                  {SERVICE_OPTIONS.map((s) => {
-                    const on = services.includes(s);
-                    return (
-                      <button
-                        type="button"
-                        key={s}
-                        className={`cf-chip${on ? " is-on" : ""}`}
-                        aria-pressed={on}
-                        onClick={() => toggleService(s)}
-                      >
-                        <span className="cf-chip-box" aria-hidden="true" />
-                        {s}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
+              <ServiceSelect label="What can we help with?" options={SERVICE_OPTIONS} value={services} onChange={setServices} />
 
               <div className="cf-field cf-field-area">
                 <textarea id="cf-message" name="message" placeholder=" " rows={4} maxLength={3000} />
