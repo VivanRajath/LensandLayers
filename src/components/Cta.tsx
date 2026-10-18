@@ -2,11 +2,14 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { allServices } from "../data";
+import { sendEnquiry } from "../lib/contact";
 
 /** Closing call-to-action with expanding rings and an enquiry form. */
 export default function Cta() {
   const ref = useRef<HTMLElement>(null);
   const [sent, setSent] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
 
   useGSAP(
     () => {
@@ -35,11 +38,21 @@ export default function Cta() {
     { scope: ref },
   );
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    setSent(String(data.get("name") || "").split(" ")[0] || "there");
-    e.currentTarget.reset();
+    const form = e.currentTarget;
+    const first = String(new FormData(form).get("name") || "").trim().split(/\s+/)[0] || "there";
+    setStatus("sending");
+    setError(null);
+    try {
+      await sendEnquiry(form);
+      form.reset();
+      setSent(first);
+      setStatus("idle");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -60,22 +73,33 @@ export default function Cta() {
         </p>
 
         {sent ? (
-          <p className="cta-thanks cta-fade" role="status">Thanks {sent} — we'll be in touch within one working day.</p>
+          <div className="cta-thanks" role="status">
+            <strong>Thank you, {sent}.</strong>
+            <span>We've emailed you a confirmation — our team will get in touch within one working day.</span>
+          </div>
         ) : (
-          <form className="cta-form cta-fade" onSubmit={submit}>
-            <input name="name" placeholder="Your name" required aria-label="Your name" />
-            <input name="email" type="email" placeholder="Email address" required aria-label="Email address" />
-            <select name="service" aria-label="Service" defaultValue="">
+          <form className="cta-form cta-fade" onSubmit={submit} aria-busy={status === "sending"}>
+            <input name="name" placeholder="Your name" required maxLength={120} autoComplete="name" aria-label="Your name" />
+            <input name="email" type="email" placeholder="Email address" required maxLength={160} autoComplete="email" aria-label="Email address" />
+            <input name="phone" type="tel" placeholder="Phone (optional)" maxLength={40} autoComplete="tel" aria-label="Phone number" />
+            <select name="service" aria-label="Service" defaultValue="" required>
               <option value="" disabled>I'm interested in…</option>
               {allServices.map((s) => (
                 <option key={s.id}>{s.name}</option>
               ))}
+              <option>Something else</option>
             </select>
-            <button type="submit" className="btn btn-brand">
-              <span className="btn-label" data-text="Work with us">Work with us</span>
+            <textarea name="message" placeholder="Tell us about your project (optional)" rows={3} maxLength={3000} aria-label="Message" />
+            {/* Honeypot for bots — hidden from people and screen readers */}
+            <input name="website" tabIndex={-1} autoComplete="off" className="cta-hp" aria-hidden="true" />
+            <button type="submit" className="btn btn-brand cta-submit" disabled={status === "sending"}>
+              <span className="btn-label" data-text={status === "sending" ? "Sending…" : "Work with us"}>
+                {status === "sending" ? "Sending…" : "Work with us"}
+              </span>
             </button>
           </form>
         )}
+        {error && <p className="cta-error" role="alert">{error}</p>}
       </div>
     </section>
   );

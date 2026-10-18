@@ -502,26 +502,43 @@ ul { list-style: none; margin: 0; padding: 0; }
 .cta-sub { max-width: 400px; color: rgba(255,255,255,0.72); font-weight: 500; }
 .cta-form {
   margin-top: 16px;
-  width: min(100%, 960px);
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  width: min(100%, 1040px);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   background: rgba(255,255,255,0.18);
   border: 1px solid rgba(255,255,255,0.18);
+  text-align: left;
 }
-.cta-form input, .cta-form select {
+.cta-form input, .cta-form select, .cta-form textarea {
   height: 52px; padding: 0 16px;
   border: 0; border-radius: 0; outline: 0;
   background: var(--black); color: var(--white);
   font: inherit; font-size: 14px;
   appearance: none;
+  color-scheme: dark; /* native dropdown list renders dark with light text */
 }
-.cta-form select { color: rgba(255,255,255,0.75); }
-.cta-form select option { color: var(--black); }
-.cta-form input::placeholder { color: rgba(255,255,255,0.45); }
-.cta-form input:focus, .cta-form select:focus { box-shadow: inset 0 -2px 0 var(--brand); }
-.cta-form .btn { height: 52px; }
+.cta-form textarea { grid-column: span 3; height: auto; min-height: 52px; padding: 15px 16px; resize: vertical; line-height: 1.5; }
+.cta-form select {
+  padding-right: 40px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23ffffff' stroke-width='1.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.cta-form select:invalid { color: rgba(255,255,255,0.5); }
+/* Options get an explicit light-on-dark style: on Windows they otherwise inherit the black field background with dark text. */
+.cta-form select option { background: #1c1c1c; color: var(--white); }
+.cta-form select option:disabled { color: rgba(255,255,255,0.45); }
+.cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(255,255,255,0.45); }
+.cta-form input:focus, .cta-form select:focus, .cta-form textarea:focus { box-shadow: inset 0 -2px 0 var(--brand); }
+.cta-form .btn { height: auto; min-height: 52px; }
 .cta-form .btn-brand:hover { background: var(--white); --btn-fg: var(--black); }
-.cta-thanks { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+.cta-form .btn:disabled { opacity: 0.6; cursor: progress; }
+.cta-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.cta-thanks { display: grid; gap: 8px; margin-top: 16px; padding: 22px 26px; border: 1px solid rgba(255,255,255,0.18); max-width: 520px; }
+.cta-thanks strong { font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase; font-size: 20px; }
+.cta-thanks span { color: rgba(255,255,255,0.72); font-weight: 500; }
+.cta-error { font-family: var(--font-mono); font-size: 12px; color: #ff8a7a; }
 
 /* =========================================================
    Footer
@@ -613,6 +630,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   .svc-item-body { flex-direction: column; align-items: flex-start; }
 
   .cta-form { grid-template-columns: 1fr 1fr; }
+  .cta-form textarea { grid-column: 1 / -1; }
+  .cta-form .cta-submit { grid-column: 1 / -1; }
   .footer-top { grid-template-columns: 1fr; }
 }
 
