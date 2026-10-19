@@ -273,3 +273,10 @@ export const team: TeamMember[] = [
     summary: "Engineers rich audio experiences, cinematic soundscapes, spatial foley, and dialogue enhancement for commercials, digital films, and promotional releases.",
   },
 ];
+
+/** Social profiles. Leave a value "" until the profile exists; those links then stay inert. */
+export const socialLinks = {
+  instagram: "https://www.instagram.com/lensandlayers.in/",
+  linkedin: "",
+  youtube: "",
+};

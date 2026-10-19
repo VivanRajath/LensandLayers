@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { groups, nav } from "../data";
+import { groups, nav, socialLinks } from "../data";
 import { useLenis, useScrollTo } from "../lib/scroll";
 
 /** Brand logo. "light" = white artwork (dark backgrounds / blended header), "dark" = for white backgrounds. */
@@ -152,7 +152,7 @@ export default function Header() {
             <a href="mailto:hello@lensandlayers.com" className="menu-sub menu-fade">hello@lensandlayers.com</a>
             <a href="tel:+910000000000" className="menu-sub menu-fade">+91 00000 00000</a>
             <div className="menu-social menu-fade">
-              <a href="#" className="dot-link">Instagram</a>
+              <a href={socialLinks.instagram} className="dot-link" target="_blank" rel="noopener noreferrer">Instagram</a>
               <a href="#" className="dot-link">LinkedIn</a>
               <a href="#" className="dot-link">YouTube</a>
             </div>
