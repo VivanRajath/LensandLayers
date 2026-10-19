@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every indexable page of lensandlayers.in. In-page sections (#services, #team…) are part of "/". -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://lensandlayers.in/</loc>
+    <lastmod>2026-10-19</lastmod>
+  </url>
+  <url>
+    <loc>https://lensandlayers.in/privacy</loc>
+    <lastmod>2026-10-19</lastmod>
+  </url>
+  <url>
+    <loc>https://lensandlayers.in/terms</loc>
+    <lastmod>2026-10-19</lastmod>
+  </url>
+</urlset>

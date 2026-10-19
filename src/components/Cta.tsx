@@ -5,7 +5,7 @@ import { allServices } from "../data";
 import { sendEnquiry, type Enquiry } from "../lib/contact";
 import ServiceSelect from "./ServiceSelect";
 
-type Errors = Partial<Record<"name" | "email" | "phone", string>>;
+type Errors = Partial<Record<"name" | "email" | "phone" | "consent", string>>;
 
 const SERVICE_OPTIONS = [...allServices.map((s) => s.name), "Something else"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -60,6 +60,7 @@ export default function Cta() {
     if (!f.email.trim()) e.email = "We need an email to reply to.";
     else if (!EMAIL_RE.test(f.email.trim())) e.email = "That email doesn't look right.";
     if (f.phone && f.phone.replace(/[^\d]/g, "").length < 7) e.phone = "Please check the phone number.";
+    if (f.consent !== "yes") e.consent = "Please agree so we can use your details to reply.";
     return e;
   };
 
@@ -75,6 +76,7 @@ export default function Cta() {
       service: services.join(", "),
       message: String(fd.get("message") || ""),
       website: String(fd.get("website") || ""),
+      consent: fd.get("consent") === "yes" ? "yes" : "",
     };
     const found = validate(data);
     setErrors(found);
@@ -214,8 +216,26 @@ export default function Cta() {
               {/* Honeypot for bots — hidden from people and screen readers */}
               <input name="website" tabIndex={-1} autoComplete="off" className="cf-hp" aria-hidden="true" />
 
+              {/* DPDP Act, 2023: notice + specific, unticked, affirmative consent before collection */}
+              <div className={`cf-consent${errors.consent ? " has-error" : ""}`}>
+                <input
+                  type="checkbox"
+                  id="cf-consent"
+                  name="consent"
+                  value="yes"
+                  aria-invalid={!!errors.consent}
+                  aria-describedby={errors.consent ? "cf-consent-err" : undefined}
+                  onChange={clearError("consent")}
+                />
+                <label htmlFor="cf-consent">
+                  I agree to Lens &amp; Layers using the details above to respond to my enquiry, as described in the{" "}
+                  <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>. I can withdraw consent at any time.
+                </label>
+                {errors.consent && <span className="cf-err" id="cf-consent-err">{errors.consent}</span>}
+              </div>
+
               <div className="cf-foot">
-                <p className="cf-note">We'll only use your details to reply to this enquiry.</p>
+                <p className="cf-note">We never sell your data or add you to mailing lists.</p>
                 <button type="submit" className="cf-submit" disabled={status === "sending"}>
                   <span>{status === "sending" ? "Sending" : "Send enquiry"}</span>
                   {status === "sending" ? (

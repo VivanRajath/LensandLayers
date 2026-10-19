@@ -670,6 +670,28 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .cf-submit:focus-visible, .cf-again:focus-visible { outline: 2px solid var(--brand); outline-offset: 0.1875rem; }
 
+/* Consent checkbox (DPDP Act) */
+.cf-consent { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; align-items: start; padding-bottom: 0.25rem; }
+.cf-consent input {
+  appearance: none; margin: 0.15rem 0 0;
+  width: 1.125rem; height: 1.125rem;
+  border: 1px solid rgba(255,255,255,0.4); background: transparent;
+  display: grid; place-items: center; cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.cf-consent input::after {
+  content: ""; width: 0.6rem; height: 0.35rem;
+  border-left: 2px solid var(--white); border-bottom: 2px solid var(--white);
+  transform: rotate(-45deg) translate(1px, -1px); opacity: 0; transition: opacity 0.2s;
+}
+.cf-consent input:checked { background: var(--brand); border-color: var(--brand); }
+.cf-consent input:checked::after { opacity: 1; }
+.cf-consent input:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.cf-consent label { font-size: 0.84rem; line-height: 1.55; color: rgba(255,255,255,0.65); cursor: pointer; }
+.cf-consent a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+.cf-consent a:hover { color: var(--brand); }
+.cf-consent.has-error input { border-color: #ff6b5b; }
+.cf-consent .cf-err { position: static; grid-column: 2; margin-top: -0.25rem; }
 .cf-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
 .cf-foot { display: flex; justify-content: space-between; align-items: center; gap: 1.25rem; flex-wrap: wrap; padding-top: 0.25rem; }
