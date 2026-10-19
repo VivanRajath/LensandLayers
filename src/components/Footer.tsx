@@ -82,8 +82,8 @@ export default function Footer() {
       <div className="footer-bot">
         <span>© {new Date().getFullYear()} Lens &amp; Layers. All rights reserved.</span>
         <div>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms &amp; Conditions</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Use</a>
         </div>
       </div>
     </footer>

@@ -1,0 +1,5 @@
+# https://lensandlayers.in/robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://lensandlayers.in/sitemap.xml

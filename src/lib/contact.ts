@@ -17,6 +17,8 @@ export type Enquiry = {
   message: string;
   /** Honeypot — must stay empty */
   website: string;
+  /** "yes" when the visitor ticked the consent box (DPDP Act consent record) */
+  consent: string;
 };
 
 export async function sendEnquiry(data: Enquiry): Promise<void> {

@@ -1,0 +1,81 @@
+/* Static legal pages (privacy.html, terms.html). Kept separate from the main site bundle. */
+:root {
+  --brand: #2337ff;
+  --ink: #111111;
+  --soft: rgba(17, 17, 17, 0.72);
+  --note: rgba(17, 17, 17, 0.5);
+  --line: rgba(17, 17, 17, 0.12);
+  --gutter: clamp(16px, 4vw, 48px);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--brand); text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+
+.lg-head {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 16px var(--gutter);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.lg-head img { display: block; height: 32px; width: auto; }
+.lg-back {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--ink); text-decoration: none;
+  border: 1px solid var(--ink); padding: 9px 14px;
+}
+.lg-back:hover { background: var(--ink); color: #fff; }
+
+main { max-width: 780px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) var(--gutter) 64px; }
+.lg-kicker { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--note); }
+h1 {
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(34px, 6vw, 60px); line-height: 0.95;
+  margin: 12px 0 18px;
+}
+.lg-meta { color: var(--note); font-size: 14px; margin: 0 0 32px; }
+.lg-summary { background: #f4f4f4; border-left: 3px solid var(--brand); padding: 18px 22px; margin: 0 0 40px; }
+.lg-summary p { margin: 0; }
+h2 {
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-stretch: 112%; font-weight: 700;
+  font-size: 22px; line-height: 1.25;
+  margin: 44px 0 12px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+h3 { font-size: 16px; margin: 24px 0 6px; }
+p, li { color: var(--soft); }
+strong { color: var(--ink); }
+ul, ol { padding-left: 22px; }
+li { margin: 4px 0; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0 8px; font-size: 14.5px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { color: var(--ink); font-weight: 600; background: #fafafa; }
+td { color: var(--soft); }
+.lg-table-wrap { overflow-x: auto; }
+/* Details the business still has to fill in — deliberately conspicuous. */
+.ph { background: #fff3c4; color: #5c4400; padding: 0 4px; border-radius: 3px; font-weight: 600; }
+address { font-style: normal; }
+.lg-foot {
+  max-width: 780px; margin: 0 auto; padding: 28px var(--gutter) 48px;
+  border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between;
+  font-size: 13px; color: var(--note);
+}
+.lg-foot nav { display: flex; gap: 20px; }
+@media (max-width: 560px) {
+  .lg-head img { height: 26px; }
+  th, td { padding: 8px; }
+}

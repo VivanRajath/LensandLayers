@@ -29,7 +29,11 @@ const CONFIG = {
   WEBSITE: "https://lensandlayers.in",
 };
 
-const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Company", "Services", "Message", "Page", "Email status"];
+// "Consent" is last so sheets created before it was added keep their existing columns.
+const HEADERS = ["Submitted at", "Name", "Email", "Phone", "Company", "Services", "Message", "Page", "Email status", "Consent"];
+const STATUS_COL = HEADERS.indexOf("Email status") + 1;
+/** Wording shown next to the website's consent checkbox; stored with each enquiry as the DPDP Act consent record. */
+const CONSENT_TEXT = "Agreed to use of details to respond to enquiry, per Privacy Policy (lensandlayers.in/privacy)";
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -51,6 +55,8 @@ function doPost(e) {
       page: clean(p.page, 300),
     };
 
+    // DPDP Act, 2023: only process personal data the visitor has consented to share.
+    if (p.consent !== "yes") return json({ ok: false, error: "Please tick the consent box so we can use your details to reply." });
     if (!data.name) return json({ ok: false, error: "Please enter your name." });
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return json({ ok: false, error: "Please enter a valid email address." });
 
@@ -67,6 +73,7 @@ function doPost(e) {
       safeCell(data.message),
       safeCell(data.page),
       "sending…",
+      CONSENT_TEXT,
     ]);
     const row = sheet.getLastRow();
 
@@ -86,7 +93,7 @@ function doPost(e) {
         console.error("Team notification failed:", teamErr);
       }
     }
-    sheet.getRange(row, HEADERS.length).setValue(status);
+    sheet.getRange(row, STATUS_COL).setValue(status);
 
     return json({ ok: true });
   } catch (err) {
@@ -166,6 +173,9 @@ function getSheet() {
     sheet.appendRow(HEADERS);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight("bold");
     sheet.setFrozenRows(1);
+  } else if (sheet.getRange(1, HEADERS.length).getValue() !== HEADERS[HEADERS.length - 1]) {
+    // Sheet made by an older version of this script: add any new header cells.
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight("bold");
   }
   return sheet;
 }

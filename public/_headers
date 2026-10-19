@@ -1,0 +1,38 @@
+# Security and caching headers for Cloudflare Pages.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Content-Security-Policy allows only what the site actually uses:
+#   scripts/styles  -> this domain (Vite bundle); styles also from Google Fonts
+#   fonts           -> Google Fonts (fonts.gstatic.com)
+#   images          -> this domain, Unsplash (hero image), data: (inline SVG icons in CSS)
+#   connect (fetch) -> Google Apps Script contact-form endpoint (+ its googleusercontent redirect)
+# If you add a new third-party service (analytics, video embed, chat widget…), add its domain here
+# or the browser will block it.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(self), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-site
+  X-Permitted-Cross-Domain-Policies: none
+
+# Hashed build output never changes for a given name: cache for a year.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images keep stable names, so cache for a week and revalidate.
+/brand/*
+  Cache-Control: public, max-age=604800
+/services/*
+  Cache-Control: public, max-age=604800
+/studio/*
+  Cache-Control: public, max-age=604800
+/team/*
+  Cache-Control: public, max-age=604800
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
