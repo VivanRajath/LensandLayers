@@ -4,16 +4,17 @@ import { useGSAP } from "@gsap/react";
 import { groups, nav } from "../data";
 import { useLenis, useScrollTo } from "../lib/scroll";
 
-export function Logo() {
+/** Brand logo. "light" = white artwork (dark backgrounds / blended header), "dark" = for white backgrounds. */
+export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
-    <span className="logo">
-      <svg className="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
-        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="2.4" />
-        <circle cx="20" cy="20" r="7.5" fill="currentColor" />
-        <path d="M20 2v10M38 20H28M20 38V28M2 20h10" stroke="currentColor" strokeWidth="2.4" />
-      </svg>
-      <span className="logo-text">LENS&amp;LAYERS</span>
-    </span>
+    <img
+      className="logo"
+      src={`${import.meta.env.BASE_URL}brand/logo-${tone}.webp`}
+      alt="Lens & Layers Digital Solutions"
+      width={1032}
+      height={151}
+      draggable={false}
+    />
   );
 }
 
@@ -25,6 +26,8 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const tl = useRef<gsap.core.Timeline>(null);
 
+  const [onLight, setOnLight] = useState(false);
+
   // Hide on scroll down, reveal on scroll up.
   useEffect(() => {
     if (!lenis) return;
@@ -32,6 +35,34 @@ export default function Header() {
       setHidden(scroll > 200 && direction === 1);
     lenis.on("scroll", onScroll);
     return () => lenis.off("scroll", onScroll);
+  }, [lenis]);
+
+  // Swap logo/nav to dark ink while the header sits over a light section.
+  useEffect(() => {
+    const probe = () => {
+      const y = 36; // roughly the header's centre line
+      const el = document.elementsFromPoint(window.innerWidth / 2, y).find((n) => !n.closest(".header"));
+      const section = el?.closest(".hero, .studio, .svc, .team, .cta, .footer");
+      let light = false;
+      if (section?.matches(".studio, .footer")) light = true;
+      else if (section?.matches(".svc")) {
+        // Services: dark/light blocks slide under the pinned layout, so check which block covers the header.
+        const groups = [...section.querySelectorAll<HTMLElement>(".svc-group")];
+        const covering = groups.find((g) => {
+          const r = g.getBoundingClientRect();
+          return r.top <= y && r.bottom + window.innerHeight * 0.3 >= y;
+        });
+        light = !covering || covering.dataset.theme === "light";
+      }
+      setOnLight(light);
+    };
+    probe();
+    lenis?.on("scroll", probe);
+    window.addEventListener("resize", probe);
+    return () => {
+      lenis?.off("scroll", probe);
+      window.removeEventListener("resize", probe);
+    };
   }, [lenis]);
 
   useGSAP(
@@ -68,7 +99,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`header${hidden && !open ? " is-hidden" : ""}${open ? " is-open" : ""}`}>
+    <header className={`header${hidden && !open ? " is-hidden" : ""}${open ? " is-open" : ""}${onLight && !open ? " on-light" : ""}`}>
       <div className="header-bar">
         <a href="#top" className="header-logo" onClick={go("#top")} aria-label="Lens & Layers home">
           <Logo />
