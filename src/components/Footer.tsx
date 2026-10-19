@@ -22,7 +22,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-top">
         <div className="footer-brand">
-          <Logo />
+          <Logo tone="dark" />
           <p>One studio.<br />Every layer of your brand.</p>
         </div>
         <div className="footer-cols">

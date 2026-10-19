@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { groups } from "../data";
+import { Logo } from "./Header";
 
-const names = groups[0].items.map((s) => s.name);
+/** Short labels so each fits on one line of the loader. */
+const names = ["Digital Marketing", "SEO", "Social Media", "Product Photography", "Video Editing", "Graphic Design"];
 
 /** Intro screen: service names flick past with a counter, then the panel lifts away. */
 export default function Loader({ onDone }: { onDone: () => void }) {
@@ -39,7 +40,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
   return (
     <div className="loader" ref={ref} aria-hidden="true">
       <div className="loader-inner">
-        <span className="loader-brand">Lens &amp; Layers</span>
+        <span className="loader-brand"><Logo /></span>
         <div className="loader-window">
           <ul className="loader-list">
             {names.map((n) => (
