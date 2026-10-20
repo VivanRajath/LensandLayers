@@ -13,12 +13,38 @@ import Footer from "./components/Footer";
 export default function App() {
   const [ready, setReady] = useState(false);
 
-  // Images change layout heights; recalculate scroll positions once they're in.
+  // Scroll-linked animations cache element positions. Anything that reflows the page after
+  // they're measured (web fonts swapping in and re-wrapping headings, images, the scrollbar
+  // returning after the loader) would leave every service line out of step with its image,
+  // so re-measure whenever the page's size actually changes.
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
+    let timer = 0;
+    let last = "";
+    const refresh = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => ScrollTrigger.refresh(), 120);
+    };
+    const ro = new ResizeObserver(() => {
+      const size = `${document.body.scrollWidth}x${document.body.scrollHeight}`;
+      if (size !== last) {
+        last = size;
+        refresh();
+      }
+    });
+    ro.observe(document.body);
+    document.fonts?.ready.then(refresh);
     window.addEventListener("load", refresh);
-    return () => window.removeEventListener("load", refresh);
+    return () => {
+      ro.disconnect();
+      window.clearTimeout(timer);
+      window.removeEventListener("load", refresh);
+    };
   }, []);
+
+  // The loader hides the scrollbar; when it lifts, the page width changes.
+  useEffect(() => {
+    if (ready) ScrollTrigger.refresh();
+  }, [ready]);
 
   return (
     <SmoothScroll>

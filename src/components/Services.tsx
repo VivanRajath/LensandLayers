@@ -39,6 +39,21 @@ export default function Services() {
       const frameTop = () => (window.innerHeight - frame.offsetHeight) / 2;
       const frameBottom = () => frameTop() + frame.offsetHeight;
 
+      /** Keep `active` in sync with scroll: index of the last item whose top is above `lineY()`. */
+      const trackActive = (items: HTMLElement[], lineY: () => number) => {
+        const update = () => {
+          const y = lineY();
+          let idx = -1;
+          for (let k = 0; k < items.length; k++) {
+            if (items[k].getBoundingClientRect().top <= y) idx = k;
+            else break;
+          }
+          setActive((cur) => (cur === idx ? cur : idx));
+        };
+        ScrollTrigger.create({ trigger: root, start: "top bottom", end: "bottom top", onUpdate: update, onRefresh: update, onToggle: update });
+        update();
+      };
+
       // Theme per group (runs on every breakpoint)
       gsap.utils.toArray<HTMLElement>(".svc-group", root).forEach((g, i) => {
         const t = g.dataset.theme as Theme;
@@ -93,16 +108,12 @@ export default function Services() {
           gsap.fromTo(layer, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "none", scrollTrigger: st });
           gsap.fromTo(img, { scale: 1.18, yPercent: 6 }, { scale: 1, yPercent: 0, ease: "none", scrollTrigger: { ...st } });
 
-          // Active once the line has passed the top of the frame
-          ScrollTrigger.create({
-            trigger: item,
-            start: () => `top ${frameTop() + 2}px`,
-            end: () => `bottom ${frameTop() + 2}px`,
-            invalidateOnRefresh: true,
-            onToggle: (self) => self.isActive && setActive(i),
-            onLeaveBack: () => i === 0 && setActive(-1),
-          });
         });
+
+        // Active = the last service whose divider has passed the top of the frame. Derived from
+        // positions on every scroll update (not per-item enter/leave events), so fast flicks or
+        // jumping via the index can never leave it stale.
+        trackActive(items, () => frameTop() + 2);
 
         // Index fades in when the first group arrives
         gsap.fromTo(
@@ -120,19 +131,14 @@ export default function Services() {
       });
 
       mm.add("(max-width: 991px)", () => {
-        gsap.utils.toArray<HTMLElement>(".svc-item", root).forEach((item, i) => {
+        gsap.utils.toArray<HTMLElement>(".svc-item", root).forEach((item) => {
           gsap.fromTo(
             item.querySelector(".svc-item-media-inner"),
             { clipPath: "inset(100% 0% 0% 0%)" },
             { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut", scrollTrigger: { trigger: item, start: "top 80%", once: true } },
           );
-          ScrollTrigger.create({
-            trigger: item,
-            start: "top 60%",
-            end: "bottom 60%",
-            onToggle: (self) => self.isActive && setActive(i),
-          });
         });
+        trackActive(gsap.utils.toArray<HTMLElement>(".svc-item", root), () => window.innerHeight * 0.6);
       });
 
       return () => mm.revert();
