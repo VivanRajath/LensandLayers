@@ -21,7 +21,7 @@
 
 const CONFIG = {
   /** Leave "" when this script is attached to the sheet; otherwise the sheet's ID. */
-  SPREADSHEET_ID: "",
+  SPREADSHEET_ID: "1k7LKJUDPgsf4sJRnnUvuXKyLNBKgJpdTGouFXW4tSYk",
   SHEET_NAME: "Enquiries",
   BRAND: "Lens & Layers Digital Solutions",
   /** Where team notifications go and where visitor replies land. Leave "" to skip notifications. */
