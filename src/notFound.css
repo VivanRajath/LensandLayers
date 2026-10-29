@@ -1,0 +1,133 @@
+/* =========================================================
+   404: a camera that has lost focus
+   ========================================================= */
+.nf-body {
+  min-height: 100svh;
+  background: radial-gradient(70% 60% at 50% 40%, #1a1d3a 0%, var(--black) 70%);
+  color: var(--white);
+  overflow-x: clip;
+}
+.nf-body .mono-label { color: rgba(255,255,255,0.55); }
+
+.nf-head { position: relative; z-index: 3; height: var(--header-h); padding: 0 calc(var(--gutter) + 1.5rem); display: flex; align-items: center; justify-content: center; }
+
+/* ---------- Viewfinder ---------- */
+.nf-finder { position: fixed; inset: clamp(0.75rem, 2vw, 1.5rem); z-index: 2; pointer-events: none; }
+.nf-corner { position: absolute; width: 2.25rem; height: 2.25rem; border: 2px solid rgba(255,255,255,0.55); }
+.nf-corner.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.nf-corner.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.nf-corner.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.nf-corner.br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.nf-hud {
+  position: absolute;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.nf-rec { top: 1rem; left: 3rem; }
+.nf-rec b { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #ff3b30; animation: nfBlink 1s steps(2, jump-none) infinite; }
+.nf-settings { top: 1rem; right: 3rem; }
+.nf-status { bottom: 1rem; left: 3rem; color: #8b97ff; }
+.nf-battery { bottom: 1rem; right: 3rem; }
+.nf-battery i { width: 1.375rem; height: 0.6875rem; border: 1px solid currentColor; border-radius: 2px; position: relative; }
+.nf-battery i::before { content: ""; position: absolute; inset: 1px; right: 60%; background: #ff3b30; animation: nfBlink 1.6s steps(2, jump-none) infinite; }
+.nf-battery i::after { content: ""; position: absolute; right: -4px; top: 2px; width: 2px; height: 5px; background: currentColor; }
+.nf-cross { position: absolute; left: 50%; top: 50%; width: 1.5rem; height: 1.5rem; translate: -50% -50%; opacity: 0.35;
+  background: linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat, linear-gradient(currentColor, currentColor) center / 1px 100% no-repeat; }
+@keyframes nfBlink { to { opacity: 0; } }
+
+/* ---------- 404 with the lens as the zero ---------- */
+.nf-main {
+  position: relative; z-index: 1;
+  min-height: calc(100svh - var(--header-h));
+  display: grid; align-content: center; justify-items: center; gap: clamp(1.5rem, 4vh, 3rem);
+  padding: 1rem calc(var(--gutter) + 1.5rem) 5rem;
+  text-align: center;
+}
+.nf-404 { margin: 0; line-height: 1; }
+.nf-digits {
+  position: relative; display: grid;
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
+  font-size: min(36vw, 17rem); line-height: 0.82;
+  animation: nfRack 6s var(--ease) infinite;
+}
+.nf-layer { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; }
+.nf-gap, .nf-lens { width: 0.74em; height: 0.74em; margin: 0 0.04em; flex: none; }
+/* "Layers": coloured copies drift apart with the pointer */
+.nf-layer.is-blue { color: var(--brand); translate: calc(var(--dx, 0) * -0.1em) calc(var(--dy, 0) * -0.06em); mix-blend-mode: screen; }
+.nf-layer.is-violet { color: #8b97ff; translate: calc(var(--dx, 0) * 0.08em) calc(var(--dy, 0) * 0.05em); mix-blend-mode: screen; opacity: 0.7; }
+.nf-layer.is-main { color: var(--white); position: relative; }
+/* Every few seconds the focus slips and racks back */
+@keyframes nfRack {
+  0%, 52%, 100% { filter: blur(0); }
+  58% { filter: blur(0.06em); }
+  64% { filter: blur(0.015em); }
+  70% { filter: blur(0.045em); }
+  78% { filter: blur(0); }
+}
+
+.nf-lens {
+  position: relative; border-radius: 50%; cursor: pointer;
+  background: radial-gradient(circle at 50% 50%, #0b0c14 0 56%, #23252f 57% 60%, #0d0e15 61%);
+  box-shadow: 0 0 0 0.02em rgba(255,255,255,0.85), 0 0 0.25em rgba(35,55,255,0.45);
+  transition: transform 0.4s var(--ease-out);
+}
+.nf-lens:hover { transform: scale(1.04) rotate(-6deg); }
+.nf-lens:focus-visible { outline: 2px dashed #8b97ff; outline-offset: 0.06em; }
+/* Focus ring with distance markings, turning while it "hunts" */
+.nf-ring {
+  position: absolute; inset: 4%; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.55) 0 1.2deg, transparent 1.2deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 82%, #000 83% 92%, transparent 93%);
+  mask: radial-gradient(circle, transparent 0 82%, #000 83% 92%, transparent 93%);
+  animation: nfHunt 6s var(--ease) infinite;
+}
+@keyframes nfHunt { 0%, 50%, 100% { rotate: 0deg; } 60% { rotate: 70deg; } 68% { rotate: 25deg; } 76% { rotate: 50deg; } }
+/* Aperture blades */
+.nf-iris {
+  position: absolute; inset: 20%; border-radius: 50%;
+  background: repeating-conic-gradient(from 10deg, #2a2d3d 0 20deg, #1a1c27 20deg 60deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 34%, #000 35%);
+  mask: radial-gradient(circle, transparent 0 34%, #000 35%);
+  animation: nfSpin 18s linear infinite;
+}
+@keyframes nfSpin { to { rotate: 1turn; } }
+.nf-pupil {
+  position: absolute; inset: 33%; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #3a4cff 0%, #1424b8 35%, #070a2a 70%);
+  box-shadow: inset 0 0 0.06em rgba(0,0,0,0.9);
+}
+.nf-glint { position: absolute; left: 22%; top: 18%; width: 28%; height: 22%; border-radius: 50%; background: rgba(255,255,255,0.85); filter: blur(0.004em); }
+.nf-glint::after { content: ""; position: absolute; left: 140%; top: 160%; width: 45%; height: 45%; border-radius: 50%; background: rgba(255,255,255,0.5); }
+/* Shutter: the aperture snaps shut and reopens */
+.nf-lens.is-snap .nf-iris { animation: nfShut 0.45s var(--ease) both, nfSpin 18s linear infinite; }
+.nf-lens.is-snap { animation: nfKick 0.45s var(--ease-out); }
+@keyframes nfShut { 0%, 100% { inset: 20%; } 35% { inset: -2%; -webkit-mask: none; mask: none; } }
+@keyframes nfKick { 30% { transform: scale(0.92); } }
+
+.nf-flash { position: fixed; inset: 0; z-index: 5; background: var(--white); opacity: 0; pointer-events: none; }
+.nf-flash.is-snap { animation: nfFlash 0.5s ease-out; }
+@keyframes nfFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+
+/* ---------- Copy ---------- */
+.nf-copy { display: grid; gap: 1rem; justify-items: center; max-width: 36rem; }
+.nf-title {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(1.5rem, 3.4vw, 2.75rem); line-height: 0.98;
+}
+.nf-text { color: rgba(255,255,255,0.68); min-height: 3.1em; }
+.nf-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; padding-top: 0.5rem; }
+.nf-ghost { --btn-fg: var(--white); color: rgba(255,255,255,0.5); }
+.nf-ghost:hover { color: var(--white); }
+
+@media (max-width: 600px) {
+  .nf-settings { display: none; }
+  .nf-rec, .nf-status { left: 1rem; }
+  .nf-battery { right: 1rem; }
+  .nf-cross { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-digits, .nf-ring, .nf-iris, .nf-rec b, .nf-battery i::before { animation: none; }
+  .nf-layer.is-blue, .nf-layer.is-violet { translate: none; }
+}

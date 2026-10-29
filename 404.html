@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found | Lens &amp; Layers</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#111111" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;125,700;125,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body class="nf-body">
+    <!-- Camera viewfinder overlay -->
+    <div class="nf-finder" aria-hidden="true">
+      <i class="nf-corner tl"></i><i class="nf-corner tr"></i><i class="nf-corner bl"></i><i class="nf-corner br"></i>
+      <span class="nf-hud nf-rec"><b></b>REC <span data-timecode>00:04:04:00</span></span>
+      <span class="nf-hud nf-settings">ISO 404 · f/4.04 · 1/404s</span>
+      <span class="nf-hud nf-status" data-status>Focus: lost</span>
+      <span class="nf-hud nf-battery">Shots <span data-shots>0</span> <i></i></span>
+      <span class="nf-cross"></span>
+    </div>
+
+    <header class="nf-head">
+      <a href="/" aria-label="Lens &amp; Layers home"><img class="logo" src="/brand/logo-light.webp" alt="Lens &amp; Layers Digital Solutions" width="1032" height="151" /></a>
+    </header>
+
+    <main class="nf-main">
+      <h1 class="nf-404" aria-label="404">
+        <span class="nf-digits" aria-hidden="true">
+          <span class="nf-layer is-blue">4<span class="nf-gap"></span>4</span>
+          <span class="nf-layer is-violet">4<span class="nf-gap"></span>4</span>
+          <span class="nf-layer is-main">4<button type="button" class="nf-lens" aria-label="Take a picture" data-lens>
+              <span class="nf-ring"></span>
+              <span class="nf-iris"></span>
+              <span class="nf-pupil" data-pupil><span class="nf-glint"></span></span>
+            </button>4</span>
+        </span>
+      </h1>
+
+      <div class="nf-copy">
+        <span class="mono-label">Error 404 · Out of frame</span>
+        <h2 class="nf-title">This shot didn't make the final cut.</h2>
+        <p class="nf-text" data-quip>The page you're after is out of frame. It may have moved, been renamed, or never been shot at all.</p>
+        <div class="nf-actions">
+          <a class="btn btn-brand" href="/"><span class="btn-label" data-text="Back to home">Back to home</span></a>
+          <a class="btn btn-pill nf-ghost" href="/#team"><span class="btn-label" data-text="Meet the team">Meet the team</span></a>
+        </div>
+      </div>
+    </main>
+
+    <div class="nf-flash" data-flash aria-hidden="true"></div>
+    <script type="module" src="/src/notFound.ts"></script>
+  </body>
+</html>

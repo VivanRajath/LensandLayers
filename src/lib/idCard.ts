@@ -197,13 +197,20 @@ export async function renderIdCard(m: TeamMember): Promise<Blob> {
   );
 }
 
-export async function downloadIdCard(m: TeamMember) {
-  const url = URL.createObjectURL(await renderIdCard(m));
+/** Saves a file through a temporary link (works for blob: and same-origin URLs). */
+export function saveFile(href: string, filename: string) {
   const a = document.createElement("a");
-  a.href = url;
-  a.download = `lens-and-layers-${m.slug}-id-card.png`;
+  a.href = href;
+  a.download = filename;
   document.body.append(a);
   a.click();
   a.remove();
+}
+
+export const idCardFilename = (m: TeamMember) => `lens-and-layers-${m.slug}-id-card.png`;
+
+export async function downloadIdCard(m: TeamMember) {
+  const url = URL.createObjectURL(await renderIdCard(m));
+  saveFile(url, idCardFilename(m));
   window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }

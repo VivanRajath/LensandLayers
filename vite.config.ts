@@ -1,6 +1,6 @@
-import { readFileSync, rmSync, writeFileSync } from "node:fs";
+import { readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { team, profileUrl, type TeamMember } from "./src/team";
 
@@ -49,18 +49,43 @@ function memberPages(): Plugin {
   };
 }
 
-export default defineConfig({
-  plugins: [react(), memberPages()],
+/**
+ * The team-kit page (admin.html) has no login, so it is kept private by its address alone.
+ * The repo is public, so that address lives in the ADMIN_PATH setting (Cloudflare Pages →
+ * Settings → Variables, or .env.local for local builds), never in the code. The build
+ * publishes the page as dist/<ADMIN_PATH>.html, or not at all when the setting is missing.
+ */
+function adminPage(adminPath: string | undefined): Plugin {
+  return {
+    name: "admin-page",
+    apply: "build",
+    writeBundle(options) {
+      const built = join(options.dir!, "admin.html");
+      if (adminPath && /^[A-Za-z0-9-]{20,}$/.test(adminPath)) {
+        renameSync(built, join(options.dir!, `${adminPath}.html`));
+      } else {
+        rmSync(built);
+        this.warn("ADMIN_PATH is missing or shorter than 20 letters/digits/dashes: the team-kit page was not published.");
+      }
+    },
+  };
+}
+
+export default defineConfig(({ mode }) => ({
+  plugins: [react(), memberPages(), adminPage(loadEnv(mode, process.cwd(), "").ADMIN_PATH)],
   build: {
     rollupOptions: {
-      // Main site plus the static legal pages (served as /privacy and /terms on Cloudflare Pages)
-      // and the team-member page template (written out per member by memberPages).
+      // Main site plus the static legal pages (served as /privacy and /terms on Cloudflare Pages),
+      // the team-member page template (written out per member by memberPages), the private
+      // team-kit page (see adminPage) and 404.html (Cloudflare Pages serves it for unknown URLs).
       input: {
         main: "index.html",
         privacy: "privacy.html",
         terms: "terms.html",
         member: "member.html",
+        admin: "admin.html",
+        notFound: "404.html",
       },
     },
   },
-});
+}));
