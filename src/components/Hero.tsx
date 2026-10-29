@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { heroImage } from "../data";
+import { useScrollTo } from "../lib/scroll";
 
 /**
  * Sticky full-screen hero. The artwork carries its own headline, so nothing is laid over it.
@@ -9,6 +10,7 @@ import { heroImage } from "../data";
  */
 export default function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLElement>(null);
+  const scrollTo = useScrollTo();
 
   // Intro once the loader has lifted
   useGSAP(
@@ -47,6 +49,12 @@ export default function Hero({ ready }: { ready: boolean }) {
         </picture>
       </div>
       <div className="hero-shade" />
+
+      {/* Phones and upright tablets: cue that the page continues below the artwork */}
+      <button type="button" className={`hero-scroll${ready ? " is-in" : ""}`} onClick={() => scrollTo("#studio")}>
+        <span>Scroll down</span>
+        <i aria-hidden="true" />
+      </button>
     </section>
   );
 }

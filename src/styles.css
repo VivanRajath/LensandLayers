@@ -253,6 +253,28 @@ ul { list-style: none; margin: 0; padding: 0; }
   }
 }
 .hero-shade { position: absolute; inset: 0; background: var(--black); opacity: 0; }
+.hero-scroll {
+  display: none;
+  position: absolute; left: 50%; bottom: max(1.5rem, env(safe-area-inset-bottom));
+  translate: -50% 0.75rem;
+  flex-direction: column; align-items: center; gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.75);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out) 0.9s, translate 0.8s var(--ease-out) 0.9s;
+}
+.hero-scroll.is-in { opacity: 1; translate: -50% 0; }
+/* A line with a dot running down it */
+.hero-scroll i { position: relative; width: 1px; height: 2.75rem; background: rgba(255,255,255,0.25); overflow: hidden; }
+.hero-scroll i::after {
+  content: ""; position: absolute; left: -1.5px; top: -0.5rem;
+  width: 4px; height: 0.875rem; border-radius: 2px; background: var(--white);
+  animation: heroScroll 1.8s var(--ease) infinite;
+}
+@keyframes heroScroll { 0% { translate: 0 0; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { translate: 0 3.25rem; opacity: 0; } }
+@media (max-aspect-ratio: 1/1) { .hero-scroll { display: flex; } }
+@media (prefers-reduced-motion: reduce) { .hero-scroll i::after { animation: none; top: 1rem; } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* =========================================================
