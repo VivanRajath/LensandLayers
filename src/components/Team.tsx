@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { team, type TeamMember } from "../data";
 import SplitHeading from "./SplitHeading";
+import SwipeHint from "./SwipeHint";
 
 const photo = (slug: string) => `${import.meta.env.BASE_URL}team/${slug}.webp`;
 const bySlug = Object.fromEntries(team.map((m) => [m.slug, m])) as Record<string, TeamMember>;
@@ -192,6 +193,7 @@ export default function Team() {
       </ul>
 
       {/* Mobile: swipeable tiles */}
+      <SwipeHint target={scrollerRef} />
       <div className="tm-scroller" ref={scrollerRef}>
         {team.map((m) => (
           <article key={m.slug} data-slug={m.slug} className={`tm-tile${mobileActive === m.slug ? " is-active" : ""}`}>

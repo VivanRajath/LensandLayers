@@ -194,6 +194,7 @@
     scrollbar-width: none;
   }
   .mp-crew-list::-webkit-scrollbar { display: none; }
+  .mp-crew .swipe-hint { display: flex; margin-inline: 0; color: var(--white); }
   .mp-crew-list li { flex: none; width: min(40vw, 10rem); scroll-snap-align: start; }
   .mp-foot { flex-direction: column; }
 }

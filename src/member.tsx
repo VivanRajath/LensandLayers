@@ -1,8 +1,9 @@
-import { StrictMode, useState } from "react";
+import { StrictMode, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 import "./member.css";
 import { team, profileUrl, type TeamMember } from "./team";
+import SwipeHint from "./components/SwipeHint";
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 const photo = (slug: string) => asset(`team/${slug}.webp`);
@@ -45,6 +46,7 @@ function MemberPage({ m }: { m: TeamMember }) {
   const first = m.name.split(" ")[0];
   const longestWord = Math.max(...m.name.split(" ").map((w) => w.length));
   const others = team.filter((o) => o.slug !== m.slug);
+  const crewRef = useRef<HTMLUListElement>(null);
   const work = `Work with ${first}`;
 
   return (
@@ -98,7 +100,8 @@ function MemberPage({ m }: { m: TeamMember }) {
             <h2 id="mp-crew-title" className="mono-label">The rest of the crew</h2>
             <a className="dot-link" href="/#team">Whole team</a>
           </div>
-          <ul className="mp-crew-list">
+          <SwipeHint target={crewRef} />
+          <ul className="mp-crew-list" ref={crewRef}>
             {others.map((o) => (
               <li key={o.slug}>
                 <a href={`/${o.slug}`}>

@@ -6,6 +6,7 @@ import { allServices, groups, introImage } from "../data";
 import { useScrollTo } from "../lib/scroll";
 import SplitHeading from "./SplitHeading";
 import PosterImg from "./PosterImg";
+import SwipeHint from "./SwipeHint";
 import Icon from "./Icon";
 
 type Theme = "intro" | "dark" | "light";
@@ -29,6 +30,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export default function Services() {
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(-1);
+  const stripRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<Theme>("intro");
   const scrollTo = useScrollTo();
 
@@ -203,7 +205,8 @@ export default function Services() {
           <span className="svc-ruler" />
           <div className="svc-media-sticky">
             <div className="svc-stage">
-              <div className="svc-strip">
+              <SwipeHint target={stripRef} />
+              <div className="svc-strip" ref={stripRef}>
                 {strip.slice(1).map((s, i) => (
                   <div className="svc-strip-item" key={i} style={{ left: `calc(${i + 1} * (var(--frame-w) + var(--strip-gap)))` }}>
                     <PosterImg p={s} alt="" />
