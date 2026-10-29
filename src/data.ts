@@ -222,5 +222,23 @@ export { team, type TeamMember } from "./team";
 export const socialLinks = {
   instagram: "https://www.instagram.com/lensandlayers.in/",
   linkedin: "",
-  youtube: "",
+  youtube: "https://www.youtube.com/@lensandlayersdigitalsolutions",
 };
+
+export const studioAddress = {
+  lines: ["4th Floor, Site No. 19, Suvarna Heights", "Near Bus Stop, Suvarna Nagara, Doddabidarakallu", "Bengaluru, Karnataka 560073"],
+  maps: "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("Suvarna Heights, Site No 19, Suvarna Nagara, Doddabidarakallu, Bengaluru, Karnataka 560073"),
+};
+
+/**
+ * WhatsApp number with country code, digits only (e.g. "919876543210").
+ * Until it's filled in, the WhatsApp buttons are hidden on the live site (shown in dev for previewing).
+ */
+export const whatsapp = {
+  number: "",
+  message: "Hi Lens & Layers! I'd like to talk about a project.",
+};
+export const whatsappUrl = whatsapp.number
+  ? `https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.message)}`
+  : "";

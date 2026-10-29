@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { allServices } from "../data";
+import { allServices, studioAddress, whatsappUrl } from "../data";
 import { sendEnquiry, type Enquiry } from "../lib/contact";
 import ServiceSelect from "./ServiceSelect";
 
@@ -151,9 +151,21 @@ export default function Cta() {
               <dt>Phone</dt>
               <dd><a href="tel:+910000000000">+91 00000 00000</a></dd>
             </div>
+            {whatsappUrl && (
+              <div>
+                <dt>WhatsApp</dt>
+                <dd><a href={whatsappUrl} target="_blank" rel="noopener noreferrer">Chat with us</a></dd>
+              </div>
+            )}
             <div>
               <dt>Hours</dt>
               <dd>Mon – Sat · 10:00 AM – 7:00 PM</dd>
+            </div>
+            <div>
+              <dt>Studio</dt>
+              <dd>
+                <a href={studioAddress.maps} target="_blank" rel="noopener noreferrer">{studioAddress.lines.join(", ")}</a>
+              </dd>
             </div>
           </dl>
 

@@ -9,6 +9,7 @@ import Services from "./components/Services";
 import Team from "./components/Team";
 import Cta from "./components/Cta";
 import Footer from "./components/Footer";
+import WhatsApp from "./components/WhatsApp";
 
 export default function App() {
   const [ready, setReady] = useState(false);
@@ -65,6 +66,7 @@ export default function App() {
         <Cta />
       </main>
       <Footer />
+      <WhatsApp ready={ready} />
     </SmoothScroll>
   );
 }
