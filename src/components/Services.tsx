@@ -5,12 +5,13 @@ import { useGSAP } from "@gsap/react";
 import { allServices, groups, introImage } from "../data";
 import { useScrollTo } from "../lib/scroll";
 import SplitHeading from "./SplitHeading";
+import PosterImg from "./PosterImg";
 import Icon from "./Icon";
 
 type Theme = "intro" | "dark" | "light";
 
 /** Images shown side by side before they slide together into the single sticky frame. */
-const strip = [introImage, ...allServices.slice(0, 3).map((s) => ({ src: s.img, alt: s.alt }))];
+const strip = [introImage, ...allServices.slice(0, 3).map((s) => ({ ...s.img, alt: s.alt }))];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -205,17 +206,17 @@ export default function Services() {
               <div className="svc-strip">
                 {strip.slice(1).map((s, i) => (
                   <div className="svc-strip-item" key={i} style={{ left: `calc(${i + 1} * (var(--frame-w) + var(--strip-gap)))` }}>
-                    <img src={s.src} alt="" />
+                    <PosterImg p={s} alt="" />
                   </div>
                 ))}
               </div>
               <div className="svc-frame">
                 <div className="svc-layer is-base">
-                  <img src={strip[0].src} alt="" />
+                  <PosterImg p={strip[0]} alt="" />
                 </div>
                 {allServices.map((s, i) => (
                   <div className="svc-layer" data-i={i} key={s.id}>
-                    <img src={s.img} alt="" />
+                    <PosterImg p={s.img} alt="" />
                   </div>
                 ))}
                 <i className="dot tl" /><i className="dot tr" /><i className="dot bl" /><i className="dot br" />
@@ -241,7 +242,7 @@ export default function Services() {
                     <span className="svc-item-line" />
                     <div className="svc-item-media">
                       <div className="svc-item-media-inner">
-                        <img src={s.img} alt={s.alt} loading="lazy" />
+                        <PosterImg p={s.img} alt={s.alt} loading="lazy" />
                       </div>
                     </div>
                     <div className="svc-item-inner">

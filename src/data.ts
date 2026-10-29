@@ -1,6 +1,3 @@
-const u = (id: string, w = 1400) =>
-  `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
-
 export type IconName =
   | "trend" | "search" | "social" | "camera" | "video" | "pen"
   | "doc" | "target" | "web" | "box" | "reel" | "chart" | "megaphone" | "cube";
@@ -11,7 +8,7 @@ export type Service = {
   tagline: string;
   body: string[];
   cta: string;
-  img: string;
+  img: Poster;
   alt: string;
   icon: IconName;
 };
@@ -23,18 +20,30 @@ export type ServiceGroup = {
   items: Service[];
 };
 
-export const heroImage = u("1493863641943-9b68992a8d07", 2400);
-
-export const heroTaglines = [
-  "Digital marketing, SEO, social media, product photography, video editing & CGI ads",
-  "One studio for every layer of your brand — strategy, content, growth",
-];
-
 /** Client artwork lives in /public (from the Lens & Layers Drive folders). */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
+/** Hero artwork (its headline is part of the image): 16:9 by width, plus a 4:3 cut for phones. */
+export const heroImage = {
+  src: asset("hero/hero-1920.webp"),
+  srcSet: [640, 1280, 1920, 2560].map((w) => `${asset(`hero/hero-${w}.webp`)} ${w}w`).join(", "),
+  compact: asset("hero/hero-640x480.webp"),
+  alt: "Expand your brand digitally with us: a robotic hand reaching for a human hand",
+};
+
+/**
+ * Each service poster comes as 9:16 in four widths (desktop frames) and as a 3:4 version
+ * laid out for phones and tablets: services/<name>-<360|720|1080|1440|480>.webp.
+ */
+export type Poster = { src: string; srcSet: string; compact: string };
+const poster = (name: string): Poster => ({
+  src: asset(`services/${name}-1080.webp`),
+  srcSet: [360, 720, 1080, 1440].map((w) => `${asset(`services/${name}-${w}.webp`)} ${w}w`).join(", "),
+  compact: asset(`services/${name}-480.webp`),
+});
+
 /** First image the strip collapses into, before any service is active. */
-export const introImage = { src: asset("studio/lens-portrait.webp"), alt: "Lens & Layers camera studio" };
+export const introImage = { ...poster("intro"), alt: "The Lens & Layers team planning brand, marketing and content work" };
 
 export const groups: ServiceGroup[] = [
   {
@@ -51,7 +60,7 @@ export const groups: ServiceGroup[] = [
           "Live campaign dashboards track impressions, engagement, conversions and ad spend, so every decision is backed by numbers and every month performs better than the last.",
         ],
         cta: "Start a campaign",
-        img: asset("services/digital-marketing.webp"),
+        img: poster("digital-marketing"),
         alt: "Digital marketing campaign dashboard with Google Ads, email and social metrics",
         icon: "trend",
       },
@@ -64,7 +73,7 @@ export const groups: ServiceGroup[] = [
           "Complete SEO solutions for real business growth: higher rankings, targeted traffic and measurable performance improvement, reported every month.",
         ],
         cta: "Get an SEO audit",
-        img: asset("services/seo.webp"),
+        img: poster("seo"),
         alt: "SEO artwork showing rankings, backlinks, on-page SEO and targeted traffic",
         icon: "search",
       },
@@ -77,7 +86,7 @@ export const groups: ServiceGroup[] = [
           "Paired with targeted promotion, we turn followers into a community and a community into customers, with growth you can see in the numbers.",
         ],
         cta: "Grow your socials",
-        img: asset("services/social-media.webp"),
+        img: poster("social-media"),
         alt: "Hand holding a phone surrounded by social media icons",
         icon: "social",
       },
@@ -90,7 +99,7 @@ export const groups: ServiceGroup[] = [
           "White-background catalogue shots, lifestyle setups and hero images delivered in every size you need for e-commerce, marketplaces, social and print.",
         ],
         cta: "Book a shoot",
-        img: asset("services/product-photography.webp"),
+        img: poster("product-photography"),
         alt: "Lens & Layers crew shooting a product in a lit studio",
         icon: "camera",
       },
@@ -103,7 +112,7 @@ export const groups: ServiceGroup[] = [
           "From reels and ads to brand films and YouTube, we handle pacing, colour grading, sound and motion graphics for a broadcast-ready finish.",
         ],
         cta: "Start a video",
-        img: asset("services/video-editing.webp"),
+        img: poster("video-editing"),
         alt: "Editor working on a video timeline: video that moves",
         icon: "video",
       },
@@ -116,7 +125,7 @@ export const groups: ServiceGroup[] = [
           "Branding that builds a strong identity, creative designs for every need, social media graphics that stand out online, print design from concept to print, and packaging that sells products.",
         ],
         cta: "Build your brand",
-        img: asset("services/graphic-design.webp"),
+        img: poster("graphic-design"),
         alt: "Creative graphic design artwork with a stylus and paint splash",
         icon: "pen",
       },
@@ -136,7 +145,7 @@ export const groups: ServiceGroup[] = [
           "Audience research, creative design, campaign setup and ongoing optimization, all aimed at one thing: better ROI.",
         ],
         cta: "Launch a campaign",
-        img: asset("services/ads-campaign.webp"),
+        img: poster("ads-campaign"),
         alt: "Ads campaign dashboard with Google, Meta, YouTube, TikTok and LinkedIn ads",
         icon: "target",
       },
@@ -149,7 +158,7 @@ export const groups: ServiceGroup[] = [
           "We plan the message, produce the creative and read the analytics, so your ad spend reaches people ready to act.",
         ],
         cta: "Plan your ads",
-        img: asset("services/advertising.webp"),
+        img: poster("advertising"),
         alt: "Laptop showing ad performance with sponsored social posts and a target",
         icon: "megaphone",
       },
@@ -162,7 +171,7 @@ export const groups: ServiceGroup[] = [
           "Photoreal CGI ads, 3D product visuals and VFX sequences that make your brand impossible to scroll past, paired with the strategy to put them in front of the right people.",
         ],
         cta: "Create a CGI ad",
-        img: asset("services/cgi-ads.webp"),
+        img: poster("cgi-ads"),
         alt: "CGI artwork of a city skyline rising out of a laptop with a film strip",
         icon: "cube",
       },
@@ -175,7 +184,7 @@ export const groups: ServiceGroup[] = [
           "Every site is SEO-ready and built for high performance, so it loads fast, ranks well and turns visitors into enquiries.",
         ],
         cta: "Build your website",
-        img: asset("services/web-creation.webp"),
+        img: poster("web-creation"),
         alt: "Website mockups on laptop and phone: transform ideas into digital experiences",
         icon: "web",
       },

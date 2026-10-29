@@ -4,13 +4,13 @@
 # Content-Security-Policy allows only what the site actually uses:
 #   scripts/styles  -> this domain (Vite bundle); styles also from Google Fonts
 #   fonts           -> Google Fonts (fonts.gstatic.com)
-#   images          -> this domain, Unsplash (hero image), data: (inline SVG icons in CSS)
+#   images          -> this domain, data: (inline SVG icons in CSS)
 #   connect (fetch) -> Google Apps Script contact-form endpoint (+ its googleusercontent redirect)
 # If you add a new third-party service (analytics, video embed, chat widget…), add its domain here
 # or the browser will block it.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=63072000; includeSubDomains
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
@@ -32,6 +32,8 @@
 /studio/*
   Cache-Control: public, max-age=604800
 /team/*
+  Cache-Control: public, max-age=604800
+/hero/*
   Cache-Control: public, max-age=604800
 /qr/*
   Cache-Control: public, max-age=604800

@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { heroImage, heroTaglines } from "../data";
+import { heroImage } from "../data";
 
 /**
- * Sticky full-screen hero. The next section slides up over it while the
- * image slowly zooms and darkens, like the reference's curtain effect.
+ * Sticky full-screen hero. The artwork carries its own headline, so nothing is laid over it.
+ * The next section slides up over it while the image drifts and darkens.
  */
 export default function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLElement>(null);
@@ -13,15 +13,8 @@ export default function Hero({ ready }: { ready: boolean }) {
   // Intro once the loader has lifted
   useGSAP(
     () => {
-      if (!ready) {
-        gsap.set(".hero-title .ln > span", { yPercent: 110 });
-        return;
-      }
-      gsap
-        .timeline()
-        .fromTo(".hero-img", { scale: 1.25 }, { scale: 1.05, duration: 2.2, ease: "expo.out" })
-        .fromTo(".hero-title .ln > span", { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: "expo.out", stagger: 0.09 }, 0.15)
-        .fromTo(".hero-fade", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", stagger: 0.08 }, 0.6);
+      if (!ready) return;
+      gsap.fromTo(".hero-img", { scale: 1.12, opacity: 0.4 }, { scale: 1, opacity: 1, duration: 2.2, ease: "expo.out" });
     },
     { scope: ref, dependencies: [ready] },
   );
@@ -39,41 +32,21 @@ export default function Hero({ ready }: { ready: boolean }) {
         ease: "none",
         scrollTrigger: { trigger: ref.current, start: "top top", end: "bottom top", scrub: true },
       });
-      gsap.to(".hero-content", {
-        yPercent: -30,
-        ease: "none",
-        scrollTrigger: { trigger: ref.current, start: "top top", end: "bottom top", scrub: true },
-      });
     },
     { scope: ref },
   );
 
-  const ticker = [...heroTaglines, ...heroTaglines];
-
   return (
     <section className="hero" id="top" ref={ref}>
+      <h1 className="sr-only">Lens &amp; Layers: expand your brand digitally with us</h1>
       <div className="hero-media">
-        <img className="hero-img" src={heroImage} alt="Photographer shooting on a city street" />
+        <picture>
+          {/* Tall phone screens get the 4:3 cut, shown whole so the headline in the artwork isn't cropped */}
+          <source media="(max-aspect-ratio: 4/5) and (max-width: 600px)" srcSet={heroImage.compact} />
+          <img className="hero-img" src={heroImage.src} srcSet={heroImage.srcSet} sizes="(max-aspect-ratio: 1/1) 170vw, 100vw" alt={heroImage.alt} fetchPriority="high" />
+        </picture>
       </div>
-      <div className="hero-overlay" />
       <div className="hero-shade" />
-
-      <div className="hero-content">
-        <span className="mono-label hero-fade">Our services</span>
-        <h1 className="hero-title" aria-label="Every visual, every strategy, every reach">
-          <span className="ln is-muted"><span>Every visual.</span></span>
-          <span className="ln"><span>Every strategy.</span></span>
-          <span className="ln"><span>Every reach.</span></span>
-        </h1>
-      </div>
-
-      <div className="hero-ticker hero-fade" aria-hidden="true">
-        <div className="hero-ticker-track">
-          {[...ticker, ...ticker].map((t, i) => (
-            <span key={i}>{t}</span>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }

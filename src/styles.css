@@ -39,6 +39,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { display: block; max-width: 100%; }
+picture { display: contents; } /* <picture> only picks the file; the <img> inside does the layout */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 h1, h2, h3, p { margin: 0; }
@@ -233,37 +235,24 @@ ul { list-style: none; margin: 0; padding: 0; }
   height: 100vh; height: 100svh;
   overflow: hidden;
   color: var(--white);
-  background: var(--black);
+  background: #16171e; /* matches the artwork's edges, so a letterboxed image blends in */
   z-index: 0;
 }
 .hero-media { position: absolute; inset: 0; will-change: transform; }
-.hero-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.25); }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,17,17,0.5) 0%, rgba(17,17,17,0.1) 35%, rgba(17,17,17,0.7) 100%); }
+.hero-img { width: 100%; height: 100%; object-fit: cover; }
+/* Portrait screens: a full-height crop would cut the headline in the artwork, so the image is
+   sized from the width instead (wide enough that the headline fills the screen, only the outer
+   edges of the hands are trimmed) and its top and bottom fade into the matching background */
+@media (max-aspect-ratio: 1/1) {
+  .hero-img {
+    position: absolute; top: 50%; left: 50%;
+    width: 170vw; max-width: none; height: auto;
+    translate: -50% -50%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  }
+}
 .hero-shade { position: absolute; inset: 0; background: var(--black); opacity: 0; }
-.hero-content {
-  position: absolute; left: var(--gutter); right: var(--gutter); bottom: 6rem;
-  display: grid; gap: 1.125rem;
-}
-.hero-content .mono-label { color: rgba(255,255,255,0.7); }
-.hero-title {
-  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
-  font-size: clamp(2.25rem, 7.6vw, 8.75rem);
-  line-height: 0.9;
-  letter-spacing: -0.01em;
-}
-.hero-title .ln.is-muted { color: rgba(255,255,255,0.55); }
-.hero-fade { opacity: 0; }
-.hero-ticker {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  border-top: 1px solid rgba(255,255,255,0.18);
-  overflow: hidden;
-  padding: 0.875rem 0;
-}
-.hero-ticker-track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
-.hero-ticker-track span {
-  font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em;
-  padding-right: 4rem; white-space: nowrap; color: rgba(255,255,255,0.85);
-}
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* =========================================================
@@ -296,7 +285,7 @@ ul { list-style: none; margin: 0; padding: 0; }
    ========================================================= */
 .svc {
   --frame-w: clamp(11.875rem, 16.5vw, 18.75rem);
-  --frame-h: calc(var(--frame-w) * 5 / 4); /* posters are 4:5 */
+  --frame-h: calc(var(--frame-w) * 16 / 9); /* posters are 9:16 */
   --strip-gap: clamp(0.75rem, 1.6vw, 1.75rem);
   --left-w: clamp(12.5rem, 18vw, 18.75rem);
   --col-gap: clamp(2rem, 6vw, 7.5rem);
@@ -814,7 +803,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     scrollbar-width: none;
   }
   .svc-strip::-webkit-scrollbar { display: none; }
-  .svc-strip-item { position: relative; left: auto !important; flex: none; width: 62vw; max-width: 17.5rem; height: auto; aspect-ratio: 4 / 5; scroll-snap-align: start; }
+  .svc-strip-item { position: relative; left: auto !important; flex: none; width: 62vw; max-width: 17.5rem; height: auto; aspect-ratio: 3 / 4; scroll-snap-align: start; }
   .svc-content { padding: 0 var(--gutter) 2.5rem; }
   .svc-spacer { display: none; }
   .svc-group { padding-top: 4rem; }
@@ -823,7 +812,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   .svc-group-label { position: static; display: block; margin-bottom: 1.5rem; }
   .svc-item { min-height: 0; color: var(--i-off); }
   .svc-item-media { display: block; padding-top: 1.25rem; }
-  .svc-item-media-inner { aspect-ratio: 4 / 5; max-width: 30rem; overflow: hidden; }
+  .svc-item-media-inner { aspect-ratio: 3 / 4; max-width: 26rem; overflow: hidden; }
   .svc-item-media img { width: 100%; height: 100%; object-fit: cover; }
   .svc-item-inner { width: 100%; padding: 1.375rem 0 3.5rem; }
   .svc-item-head { margin-bottom: 1.75rem; }
@@ -834,13 +823,12 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 @media (max-width: 600px) {
   .header-cta { display: none; }
-  .hero-content { bottom: 5rem; }
   .footer-cols { grid-template-columns: 1fr; }
   .menu-link span { font-size: 1.875rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-ticker-track, .footer-track { animation: none; }
+  .footer-track { animation: none; }
 }
 
 /* =========================================================
