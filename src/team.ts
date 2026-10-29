@@ -27,13 +27,13 @@ export const team: TeamMember[] = [
     focus: ["Creative direction", "Commercial campaigns", "Brand architecture", "Multi-channel marketing"],
   },
   {
-    id: "LL-002", slug: "deepak", name: "Deepak", role: "Head of Media House & Operations",
+    id: "LL-002", slug: "deepak", name: "Deepak H K", role: "Head of Media House & Operations",
     department: "Creative Leadership & Media Operations",
     summary: "Spearheads entire media production logistics, equipment pipelines, studio scheduling, and commercial delivery. Ensures multi-channel creative productions run smoothly from initial brief to broadcast-ready master delivery.",
     focus: ["Production logistics", "Studio scheduling", "Equipment pipelines", "Broadcast delivery"],
   },
   {
-    id: "LL-003", slug: "vikas", name: "Vikas", role: "3D & VFX Artist",
+    id: "LL-003", slug: "vikas", name: "Vikas H C", role: "3D & VFX Artist",
     department: "Post-Production, VFX & Graphic Design",
     summary: "3D artist covering asset creation, photorealistic environment texturing, and dynamic visual effects compositing. Transforms concept storyboards into immersive 3D sequences and visual effects for cinematic commercials.",
     focus: ["3D asset creation", "Environment texturing", "VFX compositing", "CGI commercials"],
@@ -45,19 +45,19 @@ export const team: TeamMember[] = [
     focus: ["Video editing", "Motion graphics", "Color grading", "Social cuts"],
   },
   {
-    id: "LL-005", slug: "abhishek", name: "Abhishek", role: "Graphic Designer",
+    id: "LL-005", slug: "abhishek", name: "Abhishek Kavaloor", role: "Graphic Designer",
     department: "Post-Production, VFX & Graphic Design",
     summary: "Crafts distinct visual brand languages across identity systems, print collateral, key visual campaign posters, and digital marketing creatives. Focuses on typographic precision, bold layout composition, and marketing resonance.",
     focus: ["Brand identity", "Print collateral", "Campaign key visuals", "Typography"],
   },
   {
-    id: "LL-006", slug: "vivan", name: "Vivan", role: "Web Developer",
+    id: "LL-006", slug: "vivan", name: "Vivan Rajath", role: "Web Developer",
     department: "Engineering, Analytics & Content",
     summary: "Architects modern, responsive web experiences, interactive agency showcases, and robust digital platforms. Ensures lightning-fast load speeds, responsive layouts across devices, and clean, scalable code architecture.",
     focus: ["Responsive websites", "Interactive showcases", "Performance", "Scalable code"],
   },
   {
-    id: "LL-007", slug: "rachana", name: "Rachana", role: "Business & Data Analyst",
+    id: "LL-007", slug: "rachana", name: "Rachana S", role: "Business & Data Analyst",
     department: "Engineering, Analytics & Content",
     summary: "Analyzes market patterns, campaign metrics, audience behaviors, and business ROI data. Converts raw analytical tracking into strategic business decisions and growth recommendations for creative campaigns.",
     focus: ["Campaign metrics", "Audience insights", "ROI analysis", "Growth strategy"],
