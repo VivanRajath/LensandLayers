@@ -41,6 +41,28 @@ function ShareButton({ m }: { m: TeamMember }) {
   );
 }
 
+/** Draws the ID card on demand (src/lib/idCard.ts, loaded only when asked for). */
+function IdCardButton({ m }: { m: TeamMember }) {
+  const [state, setState] = useState<"idle" | "busy" | "failed">("idle");
+  const download = async () => {
+    setState("busy");
+    try {
+      const { downloadIdCard } = await import("./lib/idCard");
+      await downloadIdCard(m);
+      setState("idle");
+    } catch (err) {
+      console.error("ID card download failed:", err);
+      setState("failed");
+    }
+  };
+  const label = state === "busy" ? "Creating card…" : state === "failed" ? "Try again" : "Download ID card";
+  return (
+    <button type="button" className="btn btn-pill mp-download" onClick={download} disabled={state === "busy"} aria-live="polite">
+      <span className="btn-label" data-text={label}>{label}</span>
+    </button>
+  );
+}
+
 function MemberPage({ m }: { m: TeamMember }) {
   const first = m.name.split(" ")[0];
   const longestWord = Math.max(...m.name.split(" ").map((w) => w.length));
@@ -107,11 +129,14 @@ function MemberPage({ m }: { m: TeamMember }) {
             <div className="mp-qr-text">
               <span className="mono-label">Digital card</span>
               <h2 id="mp-qr-title" className="mp-qr-title">Scan to meet {first}</h2>
-              <p>Point any phone camera at the code to open this page. Print it on business cards, ID badges, posters or the last slide of a pitch.</p>
+              <p>Point any phone camera at the code to open this page. Download {first}'s ID card, with photo, role and this code, ready to print.</p>
               <a className="mp-url" href={profileUrl(m.slug)}>{link}</a>
-              <a className="btn btn-pill mp-download" href={asset(`qr/${m.slug}.png`)} download={`lens-and-layers-${m.slug}-qr.png`}>
-                <span className="btn-label" data-text="Download QR code">Download QR code</span>
-              </a>
+              <div className="mp-downloads">
+                <IdCardButton m={m} />
+                <a className="mp-qr-only" href={asset(`qr/${m.slug}.png`)} download={`lens-and-layers-${m.slug}-qr.png`}>
+                  QR code only
+                </a>
+              </div>
             </div>
           </div>
         </section>
