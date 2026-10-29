@@ -42,8 +42,13 @@ export default function App() {
   }, []);
 
   // The loader hides the scrollbar; when it lifts, the page width changes.
+  // Links from other pages (e.g. a team member's "/#contact") land here too: the section
+  // didn't exist when the browser tried to jump to it, so jump now.
   useEffect(() => {
-    if (ready) ScrollTrigger.refresh();
+    if (!ready) return;
+    ScrollTrigger.refresh();
+    const target = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
+    target?.scrollIntoView();
   }, [ready]);
 
   return (

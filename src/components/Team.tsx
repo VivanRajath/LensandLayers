@@ -130,7 +130,7 @@ export default function Team() {
         <span className="mono-label tm-fade">Our team</span>
         <SplitHeading className="display" lines={["[The people]", "behind every layer"]} />
         <p className="team-sub tm-fade">
-          Directors, editors, artists, analysts and writers — one in-house crew. Hover over anyone to meet them.
+          Directors, editors, artists, analysts and writers — one in-house crew. Hover over anyone to meet them, click for their full profile.
         </p>
       </div>
 
@@ -147,10 +147,11 @@ export default function Team() {
               style={{ "--x": x } as React.CSSProperties}
             >
               <img src={photo(slug)} alt="" draggable={false} loading="lazy" />
-              <button
+              <a
                 className="tm-hit"
+                href={`/${slug}`}
                 data-hit={slug}
-                aria-label={`${m.name}, ${m.role}`}
+                aria-label={`${m.name}, ${m.role}: view profile`}
                 onPointerEnter={enter(slug)}
                 onFocus={enter(slug)}
                 onBlur={() => setActive(null)}
@@ -171,6 +172,7 @@ export default function Team() {
               <h3 className="tm-card-name">{shown.name}</h3>
               <p className="tm-card-role">{shown.role}</p>
               <p className="tm-card-sum">{shown.summary}</p>
+              <span className="tm-card-more dot-link">Click to view profile</span>
             </div>
           )}
         </div>
@@ -180,9 +182,11 @@ export default function Team() {
       <ul className="tm-index" onPointerLeave={() => setActive(null)}>
         {team.map((m) => (
           <li key={m.slug} className={active === m.slug ? "is-active" : ""} onPointerEnter={() => { anchorTo(m.slug, activeRef.current === null); setActive(m.slug); }}>
-            <span>{m.id}</span>
-            <strong>{m.name}</strong>
-            <em>{m.role}</em>
+            <a href={`/${m.slug}`}>
+              <span>{m.id}</span>
+              <strong>{m.name}</strong>
+              <em>{m.role}</em>
+            </a>
           </li>
         ))}
       </ul>
@@ -199,6 +203,7 @@ export default function Team() {
               <h3 className="tm-card-name">{m.name}</h3>
               <p className="tm-card-role">{m.role}</p>
               <p className="tm-card-sum">{m.summary}</p>
+              <a className="tm-card-more dot-link" href={`/${m.slug}`}>View profile</a>
             </div>
           </article>
         ))}

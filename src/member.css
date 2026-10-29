@@ -1,0 +1,227 @@
+/* =========================================================
+   TEAM MEMBER PAGES (member.html → /<slug>)
+   Builds on the tokens, .btn, .mono-label and .dot in styles.css.
+   ========================================================= */
+.mp-body { background: var(--black); color: var(--white); overflow-x: clip; }
+.mp-body .mono-label { color: rgba(255,255,255,0.55); }
+
+.mp-head {
+  position: absolute; inset: 0 0 auto; z-index: 10;
+  height: var(--header-h);
+  padding: 0 var(--gutter);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.mp-head .dot-link { color: rgba(255,255,255,0.8); white-space: nowrap; transition: color 0.3s; }
+.mp-head .dot-link:hover { color: var(--white); }
+
+/* ---------- Hero: cut-out photo on a spotlight, details beside it ---------- */
+.mp-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: end;
+  column-gap: clamp(2rem, 5vw, 6rem);
+  min-height: 100svh;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 1.5rem) var(--gutter) clamp(3rem, 6vw, 5.5rem);
+  isolation: isolate;
+  overflow-x: clip; /* the spotlight and ghost name bleed past the edges on narrow screens */
+}
+/* Giant outlined first name behind everything; sized so long names still fit the width */
+.mp-ghost {
+  position: absolute; left: 50%; top: calc(var(--header-h) + 0.5rem); z-index: -1;
+  transform: translateX(-50%);
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: min(15rem, calc(112vw / var(--len)));
+  line-height: 0.85; white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+  pointer-events: none; user-select: none;
+  animation: mpFade 1.6s var(--ease-out) both;
+}
+
+.mp-visual {
+  position: relative;
+  justify-self: center;
+  height: min(80svh, 52rem);
+  aspect-ratio: 720 / 1000;
+  max-width: 100%;
+}
+.mp-visual::before {
+  content: ""; position: absolute; inset: 4% -18% 12%; z-index: -1;
+  background: radial-gradient(closest-side, rgba(35,55,255,0.5), rgba(35,55,255,0.12) 55%, transparent 78%);
+  animation: mpGlow 1.4s var(--ease-out) both;
+}
+.mp-visual::after {
+  content: ""; position: absolute; inset: auto -10% -1px; height: 26%;
+  background: linear-gradient(to top, var(--black) 8%, transparent);
+}
+.mp-visual img {
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: bottom;
+  animation: mpRise 1.3s var(--ease-out) both;
+}
+
+.mp-info { container-type: inline-size; display: grid; gap: 1.25rem; align-content: end; padding-bottom: clamp(0rem, 3vw, 2.5rem); max-width: 40rem; }
+.mp-meta {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+}
+.mp-body .mp-meta span:first-child { color: #8b97ff; }
+.mp-meta span:last-child { text-align: right; }
+.mp-name {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  /* Shrinks for long names so the longest word (--word letters) never breaks mid-word */
+  font-size: min(clamp(2.75rem, 6.2vw, 6.5rem), 100cqi / (var(--word, 6) * 0.9));
+  line-height: 0.9; letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+.mp-role { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: clamp(1.0625rem, 1.5vw, 1.375rem); color: #8b97ff; }
+.mp-sum { font-size: clamp(1rem, 1.15vw, 1.125rem); line-height: 1.65; color: rgba(255,255,255,0.72); max-width: 36rem; }
+
+.mp-focus { display: grid; gap: 0.75rem; padding-top: 0.25rem; }
+.mp-focus ul { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.mp-focus li {
+  padding: 0.5rem 0.875rem;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.88);
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.mp-focus li:hover { border-color: rgba(139,151,255,0.7); background: rgba(35,55,255,0.12); }
+
+.mp-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 0.5rem; }
+.mp-share { --btn-fg: var(--white); color: rgba(255,255,255,0.5); }
+.mp-share:hover { color: var(--white); }
+
+/* ---------- QR "digital card" band ---------- */
+.mp-qr { background: var(--white); color: var(--ink); padding: clamp(4rem, 8vw, 7.5rem) var(--gutter); }
+.mp-qr-inner {
+  max-width: 68rem; margin: 0 auto;
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  align-items: center; gap: clamp(2.5rem, 7vw, 7rem);
+}
+.mp-qr-card {
+  position: relative; margin: 0;
+  width: clamp(14rem, 22vw, 18rem);
+  padding: 1.5rem 1.5rem 0.875rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: 0 1.75rem 3.5rem -1.5rem rgba(35,55,255,0.35);
+}
+.mp-qr-card img { width: 100%; height: auto; image-rendering: pixelated; }
+.mp-qr-card figcaption {
+  display: flex; justify-content: space-between;
+  margin-top: 0.875rem; padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+.mp-body .mp-qr-card figcaption span:first-child { color: var(--brand); }
+.mp-qr-text { display: grid; gap: 1rem; justify-items: start; }
+.mp-body .mp-qr .mono-label { color: var(--ink-note); }
+.mp-qr-title {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2rem, 4.2vw, 3.75rem); line-height: 0.95;
+}
+.mp-qr-text p { max-width: 30rem; color: var(--ink-soft); font-size: 1rem; }
+.mp-url {
+  font-family: var(--font-mono); font-size: 0.875rem; color: var(--brand);
+  border-bottom: 1px solid currentColor; padding-bottom: 0.125rem;
+}
+.mp-url:hover { color: var(--ink); }
+.mp-download { --btn-fg: var(--ink); color: var(--ink); margin-top: 0.5rem; }
+.mp-download:hover { background: var(--ink); --btn-fg: var(--white); }
+
+/* ---------- Rest of the crew ---------- */
+.mp-crew { padding: clamp(4rem, 8vw, 7rem) var(--gutter) clamp(3rem, 6vw, 5rem); max-width: 100rem; margin: 0 auto; }
+.mp-crew-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding-bottom: 1rem; margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+}
+.mp-crew-head .dot-link { color: rgba(255,255,255,0.8); }
+.mp-crew-head .dot-link:hover { color: var(--white); }
+.mp-crew-list { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 1rem; }
+.mp-crew-list a { display: grid; gap: 0.25rem; color: rgba(255,255,255,0.55); transition: color 0.4s; }
+.mp-crew-img {
+  position: relative; display: block; aspect-ratio: 720 / 1000; overflow: hidden; margin-bottom: 0.5rem;
+  background: radial-gradient(60% 50% at 50% 45%, rgba(35,55,255,0.22), transparent 72%);
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+}
+.mp-crew-img img {
+  width: 100%; height: 100%; object-fit: contain; object-position: bottom;
+  filter: brightness(0.38) saturate(0.5);
+  transform-origin: 50% 100%;
+  transition: filter 0.5s var(--ease), transform 0.7s var(--ease-out);
+}
+.mp-crew-list a:hover, .mp-crew-list a:focus-visible { color: var(--white); }
+.mp-crew-list a:hover img, .mp-crew-list a:focus-visible img { filter: none; transform: scale(1.04); }
+.mp-crew-list .mono-label { font-size: 0.625rem; }
+.mp-crew-list a:hover .mono-label { color: #8b97ff; }
+.mp-crew-list strong { font-weight: 600; font-size: 0.875rem; line-height: 1.25; }
+.mp-crew-list em { font-style: normal; font-size: 0.75rem; line-height: 1.3; opacity: 0.8; }
+
+.mp-foot {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 1.5rem;
+  padding: 1.5rem var(--gutter) 2rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.45);
+}
+.mp-foot nav { display: flex; gap: 1.5rem; }
+.mp-foot a:hover { color: var(--white); }
+
+.mp-missing { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 1.25rem; text-align: center; padding: var(--gutter); }
+.mp-missing .dot-link { color: var(--white); }
+
+/* ---------- Entrance ---------- */
+.mp-in { animation: mpIn 0.9s var(--ease-out) both; animation-delay: calc(0.15s + var(--d, 0) * 0.07s); }
+@keyframes mpIn { from { opacity: 0; transform: translateY(1.25rem); } }
+@keyframes mpRise { from { opacity: 0; transform: translateY(6%) scale(1.02); } }
+@keyframes mpGlow { from { opacity: 0; transform: scale(0.8); } }
+@keyframes mpFade { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-in, .mp-ghost, .mp-visual::before, .mp-visual img { animation: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .mp-crew-list { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 1.75rem; }
+}
+
+@media (max-width: 860px) {
+  .mp-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding-top: calc(var(--header-h) + 0.5rem);
+    row-gap: 0;
+  }
+  .mp-ghost { top: calc(var(--header-h) + 1.5rem); font-size: calc(112vw / var(--len)); }
+  .mp-visual { height: auto; width: min(100%, 24rem); }
+  .mp-visual::after { height: 32%; }
+  /* Pull the details up over the faded bottom of the photo */
+  .mp-info { margin-top: -4.5rem; position: relative; z-index: 1; padding-bottom: 0; }
+  .mp-meta { flex-direction: column; gap: 0.375rem; }
+  .mp-meta span:last-child { text-align: left; }
+
+  .mp-qr-inner { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+  .mp-qr-text { justify-items: center; }
+  .mp-qr-card { width: min(16rem, 72vw); }
+}
+
+@media (max-width: 600px) {
+  .mp-back-long { display: none; }
+  .mp-actions .btn { flex: 1 1 100%; }
+  .mp-crew-list {
+    display: flex; gap: 0.875rem;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 0.5rem;
+    scrollbar-width: none;
+  }
+  .mp-crew-list::-webkit-scrollbar { display: none; }
+  .mp-crew-list li { flex: none; width: 38vw; scroll-snap-align: start; }
+  .mp-foot { flex-direction: column; }
+}
