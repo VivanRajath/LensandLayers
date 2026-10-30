@@ -28,7 +28,7 @@ const asset = (path: string) => `${import.meta.env?.BASE_URL ?? "/"}${path}`;
 export const heroImage = {
   src: asset("hero/hero-1920.webp"),
   srcSet: [640, 1280, 1920, 2560].map((w) => `${asset(`hero/hero-${w}.webp`)} ${w}w`).join(", "),
-  compact: asset("hero/hero-640x480.webp"),
+  compact: asset("hero/hero-1280x960.webp"),
   alt: "Expand your brand digitally with us: a robotic hand reaching for a human hand",
 };
 
