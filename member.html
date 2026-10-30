@@ -1,9 +1,5 @@
 <!doctype html>
-<!--
-  Template for every team member's page. The build (memberPages in vite.config.ts) writes one
-  copy per member as dist/<slug>.html, served at lensandlayers.in/<slug>, with the __MEMBER_*__
-  placeholders filled in so link previews show the right person.
--->
+
 <html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
@@ -35,10 +31,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;125,700;125,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!--seo:jsonld-->
     <link rel="preload" as="image" href="/team/__MEMBER_SLUG__.webp" />
   </head>
   <body class="mp-body">
-    <div id="root" data-slug="__MEMBER_SLUG__"></div>
+    <div id="root" data-slug="__MEMBER_SLUG__"><!--seo:snapshot--></div>
     <script type="module" src="/src/member.tsx"></script>
   </body>
 </html>

@@ -1,5 +1,6 @@
 # Report a security vulnerability in lensandlayers.in (RFC 9116).
 # Please describe the issue and how to reproduce it; do not access or modify other people's data.
+Contact: mailto:info@lensandlayers.in
 Contact: https://lensandlayers.in/#contact
 Expires: 2027-10-19T00:00:00.000Z
 Preferred-Languages: en

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { groups, industries, socialLinks, studioAddress, whatsappUrl } from "../data";
+import { contact, groups, industries, phoneUrl, socialLinks, studioAddress, whatsappUrl } from "../data";
 import { Logo } from "./Header";
 import { WHATSAPP_PATH } from "../lib/glyphs";
 import { useScrollTo } from "../lib/scroll";
@@ -56,9 +56,9 @@ export default function Footer() {
           </div>
           <div className="footer-col">
             <span className="mono-label">Contact</span>
-            <a href="mailto:hello@lensandlayers.com">hello@lensandlayers.com</a>
-            <a href="tel:+910000000000">+91 00000 00000</a>
-            <p>Mon – Sat · 10:00 AM – 7:00 PM</p>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            {phoneUrl && <a href={phoneUrl}>{contact.phone}</a>}
+            <p>{contact.hours}</p>
             <a href={studioAddress.maps} target="_blank" rel="noopener noreferrer" className="footer-address">
               {studioAddress.lines.map((l) => (
                 <span key={l}>{l}</span>

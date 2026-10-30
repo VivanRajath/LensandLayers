@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { team, profileUrl, type TeamMember } from "./src/team";
+import { businessJsonLd, homeSnapshot, memberJsonLd, memberSnapshot, sitemap } from "./src/seo";
 
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -13,7 +14,9 @@ const fillMember = (html: string, m: TeamMember) =>
     .replaceAll("__MEMBER_ROLE__", escapeHtml(m.role))
     .replaceAll("__MEMBER_SUMMARY__", escapeHtml(m.summary))
     .replaceAll("__MEMBER_URL__", profileUrl(m.slug))
-    .replaceAll("__MEMBER_SLUG__", m.slug);
+    .replaceAll("__MEMBER_SLUG__", m.slug)
+    .replace("<!--seo:jsonld-->", memberJsonLd(m))
+    .replace("<!--seo:snapshot-->", memberSnapshot(m));
 
 /**
  * One page per team member at /<slug> (e.g. lensandlayers.in/vivan, which the QR codes open).
@@ -50,6 +53,23 @@ function memberPages(): Plugin {
 }
 
 /**
+ * Search-engine markup for the home page (business details and a plain-HTML copy of the text,
+ * see src/seo.ts) and the sitemap, generated so it always lists every team member.
+ */
+function seo(): Plugin {
+  return {
+    name: "seo",
+    transformIndexHtml(html, ctx) {
+      if (!ctx.filename.endsWith("index.html")) return html;
+      return html.replace("<!--seo:jsonld-->", businessJsonLd()).replace("<!--seo:snapshot-->", homeSnapshot());
+    },
+    writeBundle(options) {
+      writeFileSync(join(options.dir!, "sitemap.xml"), sitemap());
+    },
+  };
+}
+
+/**
  * The team-kit page (admin.html) has no login, so it is kept private by its address alone.
  * The repo is public, so that address lives in the ADMIN_PATH setting (Cloudflare Pages →
  * Settings → Variables, or .env.local for local builds), never in the code. The build
@@ -72,7 +92,7 @@ function adminPage(adminPath: string | undefined): Plugin {
 }
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), memberPages(), adminPage(loadEnv(mode, process.cwd(), "").ADMIN_PATH)],
+  plugins: [react(), seo(), memberPages(), adminPage(loadEnv(mode, process.cwd(), "").ADMIN_PATH)],
   build: {
     rollupOptions: {
       // Main site plus the static legal pages (served as /privacy and /terms on Cloudflare Pages),

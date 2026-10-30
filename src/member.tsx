@@ -65,7 +65,7 @@ function MemberPage({ m }: { m: TeamMember }) {
           <span className="mp-ghost" aria-hidden="true">{first}</span>
 
           <div className="mp-visual">
-            <img src={photo(m.slug)} alt={m.name} width={720} height={1000} />
+            <img src={photo(m.slug)} alt={`${m.name}, ${m.role} at Lens & Layers`} width={720} height={1000} />
           </div>
 
           <div className="mp-info">

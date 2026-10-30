@@ -198,7 +198,7 @@ export default function Team() {
         {team.map((m) => (
           <article key={m.slug} data-slug={m.slug} className={`tm-tile${mobileActive === m.slug ? " is-active" : ""}`}>
             <div className="tm-tile-img">
-              <img src={photo(m.slug)} alt={m.name} loading="lazy" />
+              <img src={photo(m.slug)} alt={`${m.name}, ${m.role} at Lens & Layers`} loading="lazy" />
             </div>
             <div className="tm-tile-body">
               <span className="mono-label">{m.id} · {m.department}</span>

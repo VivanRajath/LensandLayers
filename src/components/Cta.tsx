@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { allServices, studioAddress, whatsappUrl } from "../data";
+import { allServices, contact, phoneUrl, studioAddress, whatsappUrl } from "../data";
 import { sendEnquiry, type Enquiry } from "../lib/contact";
 import ServiceSelect from "./ServiceSelect";
 
@@ -145,12 +145,14 @@ export default function Cta() {
           <dl className="cta-direct cta-fade">
             <div>
               <dt>Email</dt>
-              <dd><a href="mailto:hello@lensandlayers.com">hello@lensandlayers.com</a></dd>
+              <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
             </div>
-            <div>
-              <dt>Phone</dt>
-              <dd><a href="tel:+910000000000">+91 00000 00000</a></dd>
-            </div>
+            {phoneUrl && (
+              <div>
+                <dt>Phone</dt>
+                <dd><a href={phoneUrl}>{contact.phone}</a></dd>
+              </div>
+            )}
             {whatsappUrl && (
               <div>
                 <dt>WhatsApp</dt>
@@ -159,7 +161,7 @@ export default function Cta() {
             )}
             <div>
               <dt>Hours</dt>
-              <dd>Mon – Sat · 10:00 AM – 7:00 PM</dd>
+              <dd>{contact.hours}</dd>
             </div>
             <div>
               <dt>Studio</dt>

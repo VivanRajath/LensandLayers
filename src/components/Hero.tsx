@@ -40,7 +40,7 @@ export default function Hero({ ready }: { ready: boolean }) {
 
   return (
     <section className="hero" id="top" ref={ref}>
-      <h1 className="sr-only">Lens &amp; Layers: expand your brand digitally with us</h1>
+      <h1 className="sr-only">Lens &amp; Layers: digital marketing, product photography and ads agency in Bengaluru</h1>
       <div className="hero-media">
         <picture>
           {/* Tall phone screens get the 4:3 cut, shown whole so the headline in the artwork isn't cropped */}

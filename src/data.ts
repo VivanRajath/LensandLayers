@@ -21,7 +21,8 @@ export type ServiceGroup = {
 };
 
 /** Client artwork lives in /public (from the Lens & Layers Drive folders). */
-const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+// import.meta.env is missing when vite.config.ts imports this file to write the SEO markup.
+const asset = (path: string) => `${import.meta.env?.BASE_URL ?? "/"}${path}`;
 
 /** Hero artwork (its headline is part of the image): 16:9 by width, plus a 4:3 cut for phones. */
 export const heroImage = {
@@ -95,8 +96,8 @@ export const groups: ServiceGroup[] = [
         name: "Product Photography",
         tagline: "Studio-lit. Scroll-stopping. Ready to sell.",
         body: [
-          "Professional product shoots in our own studio, with lighting, styling, props and retouching handled by the Lens & Layers crew.",
-          "White-background catalogue shots, lifestyle setups and hero images delivered in every size you need for e-commerce, marketplaces, social and print.",
+          "Professional product photography in our own Bengaluru studio, with lighting, styling, props and retouching handled by the Lens & Layers crew.",
+          "White-background catalogue shots, lifestyle setups and hero images delivered in every size you need for your website, Amazon and Flipkart listings, social and print.",
         ],
         cta: "Book a shoot",
         img: poster("product-photography"),
@@ -180,7 +181,7 @@ export const groups: ServiceGroup[] = [
         name: "Website Creation",
         tagline: "Transform ideas into digital experiences.",
         body: [
-          "Creative websites for modern brands: UI/UX design, web development and responsive layouts that look sharp on every screen.",
+          "Website design and development for modern brands: UI/UX design, custom builds and responsive layouts that look sharp on every screen.",
           "Every site is SEO-ready and built for high performance, so it loads fast, ranks well and turns visitors into enquiries.",
         ],
         cta: "Build your website",
@@ -234,10 +235,23 @@ export const socialLinks = {
   youtube: "https://www.youtube.com/@lensandlayersdigitalsolutions",
 };
 
+/**
+ * Contact details shown across the site and given to search engines (src/seo.ts).
+ * Phone: as it should be shown, e.g. "+91 98765 43210". Leave it "" until there's a real
+ * number: the phone links stay hidden until then.
+ */
+export const contact = {
+  email: "info@lensandlayers.in",
+  phone: "",
+  hours: "Mon – Fri · 10:00 AM – 6:00 PM",
+};
+export const phoneUrl = contact.phone ? `tel:${contact.phone.replace(/[^\d+]/g, "")}` : "";
+
 export const studioAddress = {
   lines: ["4th Floor, Site No. 19, Suvarna Heights", "Near Bus Stop, Suvarna Nagara, Doddabidarakallu", "Bengaluru, Karnataka 560073"],
-  maps: "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("Suvarna Heights, Site No 19, Suvarna Nagara, Doddabidarakallu, Bengaluru, Karnataka 560073"),
+  /** The studio's Google Maps place (its Business Profile). */
+  maps: "https://maps.app.goo.gl/3gXB5LLFA6Nw9tG9A",
+  geo: { latitude: 13.0328155, longitude: 77.4953222 },
 };
 
 /**
