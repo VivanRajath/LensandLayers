@@ -1,4 +1,4 @@
 # Google Search Console verification: Google fetches this exact .html URL and must get
 # a 200, but Pages normally 308-redirects *.html to the extensionless path.
 # A 200 rewrite serves the file in place. Keep this (and the file) forever.
-/google49fe659186944c00.html /google49fe659186944c00 200
+/google2a9a9e8065823801.html /google2a9a9e8065823801 200
