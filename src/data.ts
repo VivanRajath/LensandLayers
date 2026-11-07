@@ -231,7 +231,7 @@ export { team, type TeamMember } from "./team";
 /** Social profiles. Leave a value "" until the profile exists; those links then stay inert. */
 export const socialLinks = {
   instagram: "https://www.instagram.com/lensandlayers.in/",
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/company/lensandlayers",
   youtube: "https://www.youtube.com/@lensandlayersdigitalsolutions",
 };
 
@@ -242,7 +242,7 @@ export const socialLinks = {
  */
 export const contact = {
   email: "info@lensandlayers.in",
-  phone: "",
+  phone: "+91 70195 63706",
   hours: "Mon – Fri · 10:00 AM – 6:00 PM",
 };
 export const phoneUrl = contact.phone ? `tel:${contact.phone.replace(/[^\d+]/g, "")}` : "";
@@ -259,8 +259,8 @@ export const studioAddress = {
  * Until it's filled in, the WhatsApp buttons are hidden on the live site (shown in dev for previewing).
  */
 export const whatsapp = {
-  number: "",
-  message: "Hi Lens & Layers! I'd like to talk about a project.",
+  number: "917019563706",
+  message: "Hello Lens & Layers, I found you on your website and would like to talk about a project for my business.",
 };
 export const whatsappUrl = whatsapp.number
   ? `https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.message)}`

@@ -24,12 +24,13 @@ export function businessJsonLd() {
     "@type": "ProfessionalService",
     "@id": ORG_ID,
     name: "Lens & Layers Digital Solutions",
-    alternateName: "Lens & Layers",
+    alternateName: ["Lens & Layers", "Lens and Layers"],
     url: `${SITE}/`,
     logo: `${SITE}/icon-512.png`,
     image: `${SITE}/og-image.png`,
     description:
-      "Creative and digital marketing agency in Bengaluru with an in-house product photography studio: ads campaigns, video editing, CGI ads, graphic design, SEO, social media marketing and website design.",
+      "Commercial media production house and digital marketing agency in Bengaluru with an in-house product photography studio: ads campaigns, cinematography, video editing, motion graphics, CGI and VFX ads, graphic design, SEO, social media marketing and website design.",
+    founder: { "@type": "Person", name: "Deekshith Kumar S", url: profileUrl("deekshith") },
     email: contact.email,
     ...(contact.phone && { telephone: contact.phone }),
     address: {
@@ -53,8 +54,8 @@ export function businessJsonLd() {
       { "@type": "Country", name: "India" },
     ],
     knowsAbout: [
-      "Product photography", "E-commerce photography", "Digital marketing", "Google Ads", "Meta Ads",
-      "Video editing", "Video production", "CGI advertising", "3D product visuals", "Graphic design",
+      "Product photography", "Commercial photography", "E-commerce photography", "Cinematography", "Digital marketing", "Google Ads", "Meta Ads",
+      "Video editing", "Video production", "Motion graphics", "CGI advertising", "3D visualization", "Visual effects", "Graphic design",
       "Branding", "Search engine optimization", "Social media marketing", "Website design", "Web development",
     ],
     hasOfferCatalog: {
