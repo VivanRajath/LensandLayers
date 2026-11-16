@@ -29,7 +29,7 @@ export function businessJsonLd() {
     logo: `${SITE}/icon-512.png`,
     image: `${SITE}/og-image.png`,
     description:
-      "Commercial media production house and digital marketing agency in Bengaluru with an in-house product photography studio: ads campaigns, cinematography, video editing, motion graphics, CGI and VFX ads, graphic design, SEO, social media marketing and website design.",
+      "Digital marketing and ad agency in Bangalore (Bengaluru): Google and Meta ads campaigns, SEO, social media marketing and website design, backed by an in-house production studio for product photography, cinematography, video editing, motion graphics, CGI and VFX ads and graphic design.",
     founder: { "@type": "Person", name: "Deekshith Kumar S", url: profileUrl("deekshith") },
     email: contact.email,
     ...(contact.phone && { telephone: contact.phone }),
@@ -111,8 +111,8 @@ export function homeSnapshot() {
     )
     .join("");
   return `<div class="seo-snap">
-<h1>Lens &amp; Layers: digital marketing, product photography and ads agency in Bengaluru</h1>
-<p>Every visual. Every strategy. Every reach. Lens &amp; Layers Digital Solutions is a Bengaluru creative studio for product photography, ads campaigns, video editing, CGI ads, graphic design, SEO, social media marketing and website design, all under one roof.</p>
+<h1>Lens &amp; Layers: digital marketing and ad agency in Bangalore</h1>
+<p>Every visual. Every strategy. Every reach. Lens &amp; Layers Digital Solutions is a digital marketing and ad agency in Bangalore (Bengaluru): ads campaigns, SEO, social media marketing, product photography, video editing, CGI ads, graphic design and website design, all under one roof.</p>
 <section id="studio"><h2>The studio</h2>${studio.map((s) => `<h3>${esc(s.title)}: ${esc(s.kicker)}</h3><p>${esc(s.body)}</p>`).join("")}</section>
 <section id="services"><h2>Services</h2>${services}</section>
 <section><h2>Industries we work with</h2><p>${industries.map(esc).join(", ")}</p></section>
