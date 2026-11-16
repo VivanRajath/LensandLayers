@@ -4,6 +4,9 @@ import "./styles.css";
 import "./member.css";
 import { team, profileUrl, type TeamMember } from "./team";
 import SwipeHint from "./components/SwipeHint";
+import { startAos } from "./lib/aos";
+
+startAos();
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 const photo = (slug: string) => asset(`team/${slug}.webp`);
@@ -96,14 +99,14 @@ function MemberPage({ m }: { m: TeamMember }) {
         </section>
 
         <section className="mp-crew" aria-labelledby="mp-crew-title">
-          <div className="mp-crew-head">
+          <div className="mp-crew-head" data-aos="fade-up">
             <h2 id="mp-crew-title" className="mono-label">The rest of the crew</h2>
             <a className="dot-link" href="/#team">Whole team</a>
           </div>
           <SwipeHint target={crewRef} />
           <ul className="mp-crew-list" ref={crewRef}>
-            {others.map((o) => (
-              <li key={o.slug}>
+            {others.map((o, i) => (
+              <li key={o.slug} data-aos="fade-up" style={{ "--aos-delay": `${Math.min(i, 4) * 0.08}s` } as React.CSSProperties}>
                 <a href={`/${o.slug}`}>
                   <span className="mp-crew-img">
                     <img src={photo(o.slug)} alt="" width={720} height={1000} loading="lazy" />

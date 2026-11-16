@@ -6,7 +6,21 @@ import { Logo } from "./Header";
 /** Short labels so each fits on one line of the loader. */
 const names = ["Digital Marketing", "SEO", "Social Media", "Product Photography", "Video Editing", "Graphic Design"];
 
-/** Intro screen: service names flick past with a counter, then the panel lifts away. */
+/**
+ * Resolves once the page has fully loaded (hero image, fonts, styles), or after 8s so one slow
+ * file can't hold the loader forever.
+ */
+const pageLoaded = new Promise<void>((resolve) => {
+  if (document.readyState === "complete") return resolve();
+  window.addEventListener("load", () => resolve(), { once: true });
+  window.setTimeout(resolve, 8000);
+});
+
+/**
+ * Intro screen: service names flick past with a counter, then the panel lifts away, but not
+ * before the page has loaded. index.html carries a static copy of its first frame, so it's
+ * on screen before this script arrives; keep the two in step.
+ */
 export default function Loader({ onDone }: { onDone: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -15,6 +29,8 @@ export default function Loader({ onDone }: { onDone: () => void }) {
       const count = { v: 0 };
       const counter = ref.current!.querySelector(".loader-count")!;
       const tl = gsap.timeline({ onComplete: onDone });
+      let loaded = false;
+      pageLoaded.then(() => (loaded = true));
       document.documentElement.classList.add("is-loading");
 
       tl.to(count, {
@@ -25,6 +41,12 @@ export default function Loader({ onDone }: { onDone: () => void }) {
       })
         .to(".loader-list", { yPercent: -(100 / names.length) * (names.length - 1), duration: 1.9, ease: `steps(${names.length - 1})` }, 0)
         .to(".loader-bar i", { scaleX: 1, duration: 1.9, ease: "power2.inOut" }, 0)
+        // Hold at 100 until everything has loaded, so the page underneath is complete when it's revealed
+        .call(() => {
+          if (loaded) return;
+          tl.pause();
+          pageLoaded.then(() => tl.resume());
+        })
         .to(".loader-inner", { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" })
         .to(ref.current, {
           clipPath: "inset(0% 0% 100% 0%)",

@@ -1,0 +1,6 @@
+/* Loaded only inside <noscript>: with JavaScript off, drop the static loader (index.html) and show
+   the plain-HTML copy of the page (src/seo.ts). "html" outranks the rules in styles.css whichever
+   stylesheet loads last. */
+html .loader { display: none; }
+html .seo-snap { height: auto; overflow: visible; }
+html .seo-snap > * { visibility: visible; }

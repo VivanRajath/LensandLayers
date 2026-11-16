@@ -23,12 +23,12 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-top">
-        <div className="footer-brand">
+        <div className="footer-brand" data-aos="fade-up">
           <Logo tone="dark" />
           <p>One studio.<br />Every layer of your brand.</p>
         </div>
         <div className="footer-cols">
-          <div className="footer-col">
+          <div className="footer-col" data-aos="fade-up" style={{ "--aos-delay": "0.08s" } as React.CSSProperties}>
             <span className="mono-label">Socials</span>
             <div className="footer-social">
               {socials.filter((s) => s.label !== "WhatsApp" || s.href).map((s) => (
@@ -43,7 +43,7 @@ export default function Footer() {
               ))}
             </div>
           </div>
-          <div className="footer-col">
+          <div className="footer-col" data-aos="fade-up" style={{ "--aos-delay": "0.16s" } as React.CSSProperties}>
             <span className="mono-label">Company</span>
             <div className="footer-links">
               <a href="#top" onClick={go("#top")}>Home</a>
@@ -54,7 +54,7 @@ export default function Footer() {
               <a href="#contact" onClick={go("#contact")}>Contact us</a>
             </div>
           </div>
-          <div className="footer-col">
+          <div className="footer-col" data-aos="fade-up" style={{ "--aos-delay": "0.24s" } as React.CSSProperties}>
             <span className="mono-label">Contact</span>
             <a href={`mailto:${contact.email}`}>{contact.email}</a>
             {phoneUrl && <a href={phoneUrl}>{contact.phone}</a>}
@@ -68,7 +68,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footer-marquee">
+      <div className="footer-marquee" data-aos="fade">
         <div className="footer-tabs" role="tablist">
           {(["industries", "services"] as const).map((t) => (
             <button key={t} role="tab" aria-selected={tab === t} className={tab === t ? "is-active" : ""} onClick={() => setTab(t)}>

@@ -34,10 +34,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;125,700;125,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- With JavaScript off, show the plain-HTML copy of the page (hidden otherwise, see styles.css) -->
+    <noscript><link rel="stylesheet" href="/noscript.css" /></noscript>
   </head>
   <body>
-    <!-- Plain-HTML copy of the page text for crawlers (src/seo.ts); React replaces it on load -->
-    <div id="root"><!--seo:snapshot--></div>
+    <!-- The loader's first frame, so it shows before any script arrives; it must match src/components/Loader.tsx,
+         which takes over from this exact state. Under it, the plain-HTML copy of the page text for crawlers
+         (src/seo.ts). React replaces both when it starts. -->
+    <div id="root">
+      <div class="loader" aria-hidden="true">
+        <div class="loader-inner">
+          <span class="loader-brand"><img class="logo" src="/brand/logo-light.webp" alt="" width="1032" height="151" /></span>
+          <div class="loader-window">
+            <ul class="loader-list">
+              <li>Digital Marketing</li><li>SEO</li><li>Social Media</li><li>Product Photography</li><li>Video Editing</li><li>Graphic Design</li>
+            </ul>
+          </div>
+          <div class="loader-foot"><span class="loader-bar"><i></i></span><span class="loader-count">000</span></div>
+        </div>
+      </div>
+      <!--seo:snapshot-->
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
